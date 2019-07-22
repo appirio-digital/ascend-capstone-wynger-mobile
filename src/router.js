@@ -33,6 +33,10 @@ export const TabNavigator = createBottomTabNavigator({
       return <Icon type="Ionicons" name={iconName} />;
     }
   }),
+  tabBarOptions: {
+    activeTintColor: 'red',
+    inactiveTintColor: 'black',
+  },
 })
 
 export default createAppContainer(TabNavigator);
