@@ -6,7 +6,6 @@ import ProductsScreen from './screens/Products';
 import AccountsScreen from './screens/Accounts';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
 import AuthenticateScreen from './screens/Authenticate';
-import HomeScreen from './screens/Home';
 
 export const TabNavigator = createBottomTabNavigator({
   Auth: AuthenticateScreen,
