@@ -5,10 +5,10 @@ import { Icon } from 'native-base'
 import ProductsScreen from './screens/Products';
 import AccountsScreen from './screens/Accounts';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
-import AuthenticateScreen from './screens/Authenticate';
+//import AuthenticateScreen from './screens/Authenticate';
 
 export const TabNavigator = createBottomTabNavigator({
-  Auth: AuthenticateScreen,
+  //Auth: AuthenticateScreen,
   Products: ProductsScreen,
   Accounts: AccountsScreen,
   Barcode: BarcodeScannerScreen,
