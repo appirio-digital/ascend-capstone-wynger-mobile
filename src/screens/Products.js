@@ -4,22 +4,16 @@ import {
   Container, 
   Header, 
   Title, 
-  Left, 
-  Right, 
   Button, 
   Body, 
   Content,
   Text, 
-  Card, 
-  CardItem,
-  List,
-  ListItem,
   Input,
   Item,
-  Icon,
   Picker
 } from "native-base";
 
+import ProductList from '../components/products/ProductList';
 import Colors from '../constants/Colors';
 
 const ProductScreen = {
@@ -114,22 +108,7 @@ export default class Products extends React.Component {
             )
           })}
           </Picker>
-          {ProductScreen.products.map((product, index) => {
-            return (
-              <Card key={product.id}>
-                <CardItem>
-
-                </CardItem>
-                <Left>
-                  <Item>
-                    <Text>{index + 1}. </Text>
-                    <Text>{product.name}</Text>
-                  </Item>
-                  <Text>{product.industry}</Text>
-                </Left>
-              </Card>
-            )
-          })}
+          <ProductList products={ProductScreen.products} />
         </Content>
       </Container>
     );
