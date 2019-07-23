@@ -1,16 +1,17 @@
 import React from "react";
-import { StyleSheet } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { 
   Container, 
   Header, 
-  Title, 
-  Button, 
+  Title,
   Body, 
-  Content,
-  Text, 
+  Content, 
   Input,
-  Item,
-  Picker
+  Picker,
+  Icon,
+  Left,
+  Right,
+  Button
 } from "native-base";
 
 import ProductList from '../components/products/ProductList';
@@ -53,19 +54,22 @@ const ProductScreen = {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     backgroundColor: Colors.screenBackground
   },
   searchItem: {
-    marginTop: 10,
-    marginLeft: 2,
-    marginRight: 2,
+    marginHorizontal: 10,
+    marginVertical: 10
   },
   searchInput: {
     borderStyle: 'solid',
     borderColor: Colors.wyngerGrey,
     borderRadius: 5,
     borderWidth: 1
+  },
+  picker: {
+    width: undefined,
+    marginVertical: 20,
   }
 })
 
@@ -80,31 +84,48 @@ export default class Products extends React.Component {
   
   render() {
     return (
-      <Container >
+      <Container style={styles.content}>
         <Header>
           <Body>
             <Title>Products</Title>
           </Body>
         </Header>
-        <Content style={styles.container}>
-          <Item style={styles.searchItem}>
+        <Content style={styles.content}>
+          <View style={styles.searchItem}>
             <Input 
               style={styles.searchInput}
               placeholder="Search Products Here..." 
             />
-            <Button>
-              <Text>Search</Text>
-            </Button>
-          </Item>
+          </View>
           <Picker
-            style={{ backgroundColor: 'yellow' }}
             mode="dropdown"
+            iosIcon={<Icon name="arrow-down" />}
+            style={styles.picker}
+            textStyle={{ fontWeight: 'bold' }}
+            itemTextStyle={{ fontWeight: 'bold' }}
             selectedValue={this.state.selectedProduct}
             onValueChange={this.onSelectedProductValueChange}
+            renderHeader={(backAction) => (
+              <Header>
+                <Left>
+                  <Button transparent onPress={backAction}>
+                    <Icon name="arrow-back" />
+                  </Button>
+                </Left>
+                <Body style={{ flex: 3 }}>
+                  <Title>Choose A Listview</Title>
+                </Body>
+                <Right />
+              </Header>
+            )}
           >
           {ProductScreen.listViews.map((list, index) => {
             return (
-              <Picker.Item key={index} label={list.label} value={list.value} />
+              <Picker.Item 
+                key={index}
+                label={list.label} 
+                value={list.value}
+              />
             )
           })}
           </Picker>

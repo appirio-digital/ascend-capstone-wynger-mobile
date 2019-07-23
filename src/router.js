@@ -16,25 +16,28 @@ export const TabNavigator = createBottomTabNavigator({
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
       const { routeName } = navigation.state;
-      
       let iconName = '';
-      if (routeName === 'Products') {
-        iconName = 'ios-pricetags';
-      } else if (routeName === 'Accounts') {
-        iconName = 'ios-people';
-      } else if (routeName === 'Barcode') {
-        iconName = 'ios-qr-scanner';
-      } else {
-        iconName = 'ios-home';
-      }
 
-      // You can return any component that you like here!
-      return <Icon type="Ionicons" name={iconName} />;
+      if (routeName === 'Products')      iconName = 'ios-pricetags';
+      else if (routeName === 'Accounts') iconName = 'ios-people';
+      else if (routeName === 'Barcode')  iconName = 'ios-qr-scanner';
+
+      return (
+        <Icon 
+          type="Ionicons" 
+          name={iconName} 
+          color={tintColor} 
+          style={{ color: tintColor }}
+        />
+      );
     }
   }),
   tabBarOptions: {
     activeTintColor: 'red',
     inactiveTintColor: 'black',
+    style: {
+      height: 60
+    }
   },
 })
 
