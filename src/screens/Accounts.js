@@ -24,6 +24,25 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: Colors.screenBackground
   },
+  header: {
+    backgroundColor: Colors.wyngerRed,
+  },
+  headerContentWrapper: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    width: '100%'
+  },
+  headerUserTextWrapper: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  headerUserAvatarWrapper: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  headerUserAvatar: {
+    alignSelf: 'center'
+  },
   searchItem: {
     marginHorizontal: 10,
     marginVertical: 10
@@ -38,7 +57,7 @@ const styles = StyleSheet.create({
     width: undefined,
     marginVertical: 20,
   }
-})
+});
 
 export default class Accounts extends React.Component {
 
@@ -53,12 +72,19 @@ export default class Accounts extends React.Component {
   render() {
     return (
       <Container>
-        <Header span style={{ alignItems: "flex-start", justifyContent: "center" }}>
-          <Body style={{ flexDirection: 'column' }}>
-            <Title style={{}}>{fakeUser.name}</Title>
-            <Subtitle style={{}}>{fakeUser.userType}</Subtitle>
-            <Thumbnail style={{ alignSelf: "flex-end" }} source={{ uri: 'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg' }} />
-          </Body>
+        <Header span style={styles.header}>
+          <View style={styles.headerContentWrapper}>
+            <View style={styles.headerUserTextWrapper}>
+              <Title style={{ color: 'white' }}>{fakeUser.name}</Title>
+              <Subtitle style={{ color: 'white' }}>{fakeUser.userType}</Subtitle>
+            </View>
+            <View style={styles.headerUserAvatarWrapper}>
+              <Thumbnail
+                style={styles.headerUserAvatar}
+                source={{ uri: fakeUser.photoUrl }} 
+              />
+            </View>
+          </View>
         </Header>
         <Content style={styles.content}>
           <View style={styles.searchItem}>

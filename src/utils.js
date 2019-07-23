@@ -1,4 +1,4 @@
-export const fakeUser = { name: 'Marky Mark', userType: 'The Funky Bunch', id: '001' }
+export const fakeUser = { name: 'Marky Mark', userType: 'The Funky Bunch', id: '001', photoUrl: 'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg' }
 
 export const fakeAccountListViews = [
   { id: 'sd09h87setr8h7', label: 'All Accounts', value: 'All' },
