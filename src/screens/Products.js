@@ -11,47 +11,14 @@ import {
   Icon,
   Left,
   Right,
-  Button
+  Button,
+  Subtitle,
+  Thumbnail
 } from "native-base";
 
-import ProductList from '../components/products/ProductList';
+import ProductList from '../components/ProductList';
 import Colors from '../constants/Colors';
-
-const ProductScreen = {
-  listViews: [
-    { id: 'sd09h87setr8h7', label: 'All Products', value: 'All' },
-    { id: 'sd0a98fr7garf', label: 'My Products', value: 'My' },
-    { id: 'sdas9fg788asfgdtr8h7', label: 'Midwest Products', value: 'Midwest' },
-    { id: 'sd09ha9sfg8a7rg7', label: 'Eastern Products', value: 'Eastern' },
-    { id: 'sdasf9g7ayftr8h7', label: 'Southern Products', value: 'Southern' },
-  ], 
-  products: [
-    { id: 'sd09h87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd0a98fr7garf', name: 'Hockey Kit 2', industry: 'Sports' },
-    { id: 'sdas9fg788asfgdtr8h7', name: 'Hockey Kit 3', industry: 'Sports' },
-    { id: 'sd09ha9sfg8a7rg7', name: 'Soccer Kit 1', industry: 'Sports' },
-    { id: 'sdasf9g7ayftr8h7', name: 'Soccer Kit 2', industry: 'Sports' },
-    { id: 'sd09h87setas9f8g7as9', name: 'Soccer Kit 3', industry: 'Sports' },
-    { id: 'as9dgf7as9dsetr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'asf9gaf9getr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'aslifguayregisetr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h8adf9g8a8frgh7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h8ad9fg8ad7setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09hasf0g9a87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09afgafrgh87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd0adf9g8a89fg9h87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09ha9fgafg987setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09a98rdgafd9g8h87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09hafg09a0fd87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09hafg8a9f8g87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h87a0fg9asetr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'afg98afdsd09h87setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h87as89fgas9setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h87saf89gafgetr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h8adf9g8adf7setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-    { id: 'sd09h8ad0f9gadfg7setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
-  ]
-}
+import { fakeProducts, fakeProductListViews, fakeUser } from "../utils";
 
 const styles = StyleSheet.create({
   content: {
@@ -75,7 +42,7 @@ const styles = StyleSheet.create({
 
 export default class Products extends React.Component {
   state = {
-    selectedProduct: ProductScreen.listViews[0].value
+    selectedProduct: fakeProductListViews[0].value
   }
 
   onSelectedProductValueChange = (value) => {
@@ -85,9 +52,11 @@ export default class Products extends React.Component {
   render() {
     return (
       <Container style={styles.content}>
-        <Header>
-          <Body>
-            <Title>Products</Title>
+        <Header span style={{ alignItems: "flex-start", justifyContent: "center" }}>
+          <Body style={{ flexDirection: 'column' }}>
+            <Title style={{}}>{fakeUser.name}</Title>
+            <Subtitle style={{}}>{fakeUser.userType}</Subtitle>
+            <Thumbnail style={{ alignSelf: "flex-end" }} source={{ uri: 'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg' }} />
           </Body>
         </Header>
         <Content style={styles.content}>
@@ -119,7 +88,7 @@ export default class Products extends React.Component {
               </Header>
             )}
           >
-          {ProductScreen.listViews.map((list, index) => {
+          {fakeProductListViews.map((list, index) => {
             return (
               <Picker.Item 
                 key={index}
@@ -129,7 +98,7 @@ export default class Products extends React.Component {
             )
           })}
           </Picker>
-          <ProductList products={ProductScreen.products} />
+          <ProductList products={fakeProducts} />
         </Content>
       </Container>
     );

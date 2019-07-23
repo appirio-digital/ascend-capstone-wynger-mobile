@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, FlatList, View, Text } from 'react-native';
 import { ListItem, Right, Left, Body, Button, Icon, Item } from 'native-base';
 
-import Colors from '../../constants/Colors'
+import Colors from '../constants/Colors'
 
 const styles = StyleSheet.create({
   item: {
