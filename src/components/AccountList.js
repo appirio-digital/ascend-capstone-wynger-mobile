@@ -19,13 +19,11 @@ const styles = StyleSheet.create({
     // elevation: 8,
   },
   itemName: {
-    color: Colors.wyngerGrey,
     fontSize: 18,
     fontWeight: 'bold'
   },
   itemIndustry: {
     fontSize: 16,
-    color: Colors.wyngerGrey
   }
 })
 export default class AccountList extends React.Component {
@@ -41,7 +39,7 @@ export default class AccountList extends React.Component {
         </View>
       </Left>
       <Right>
-        <Button transparent>
+        <Button transparent onPress={() => this.props.navigateToDetailsPage(item)}>
           <Icon type="Ionicons" name="ios-arrow-forward" style={{ color: Colors.wyngerGrey }} />
         </Button>
       </Right>

@@ -1,64 +1,159 @@
-import React from "react";
-import { StatusBar } from "react-native"
-import { Container, Header, Title, Left, Right, Button, Body, Content, Card, CardItem, List, ListItem, Text, Accordion, Picker, Form, Input, Item, Subtitle, Thumbnail, Row } from "native-base";
-import { FlatList } from "react-native-gesture-handler";
+import React from 'react';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { 
+  Container,
+  Body,
+  Content,
+  Accordion,
+  Header,
+  Title,
+  Left,
+  Right,
+  Subtitle,
+  Button,
+  Icon,
+  ListItem
+} from 'native-base';
 
-const user = {name:'Marky Mark', userType:'Eastern Marketing Team', id: '001'}
+import Colors from '../constants/Colors';
+import { fakeRelatedLists } from '../utils';
 
-const fakelistviews = [
-  { id: '000', name: 'view all'},
-  { id: '001', name: 'view1'},
-  { id: '002', name: 'view2'},
-  { id: '003', name: 'view3'}
-]
-
-const fakedata = [
-  { id: '001', accountName: 'Hospital Chicago'},
-  { id: '001', accountName: 'Hospital Milwaukee'},
-  { id: '002', accountName: 'Hospital Boston'},
-  { id: '002', accountName: 'Hospital New York'},
-  { id: '003', accountName: 'Hospital San Francisco'},
-  { id: '003', accountName: 'Hospital Seattle'},
-  { id: '004', accountName: 'Hospital Dallas'},
-  { id: '004', accountName: 'Hospital Houston'},
-  { id: '005', accountName: 'Hospital Miami'},
-  { id: '005', accountName: 'Hospital Atlanta'},
-  { id: '006', accountName: 'Hospital Denver'},
-  { id: '006', accountName: 'Hospital Las Vegas'},
-  { id: '007', accountName: 'Hospital Boseman'},
-  { id: '007', accountName: 'Hospital Minneapolis'}
-]
-
-
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: Colors.wyngerRed,
+  },
+  headerTitle: {
+    color: 'white'
+  },
+  headerSubtitle: {
+    color: 'white'
+  },
+  content: {
+    backgroundColor: Colors.screenBackground
+  }
+});
 
 export default class AccountDetail extends React.Component {
+  
+  renderAccordionContent = (accordionContent) => {
+    if (accordionContent.title === 'Contacts') {
+      return (
+        <FlatList
+          data={accordionContent.content}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
+            return (
+              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
+                <Text>{index + 1}. {item.name}</Text>
+              </ListItem>
+            )
+          }}
+        />
+      );
+    }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: undefined
-    };
-  }
-  onValueChange(value) {
-    this.setState({
-      selected: value
-    });
+    if (accordionContent.title === 'Cases') {
+      return (
+        <FlatList
+          data={accordionContent.content}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
+            return (
+              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
+                <Left>
+                  <View>
+                    <Text>{index + 1}. {item.caseNumber}</Text>
+                    <Text>{item.caseReason}</Text>
+                  </View>
+                </Left>
+                <Right>
+                  <Text>{item.caseStatus}</Text>
+                </Right>
+              </ListItem>
+            )
+          }}
+        />
+      );
+    }
+
+    if (accordionContent.title === 'Opportunities') {
+      return (
+        <FlatList
+          data={accordionContent.content}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => {
+            return (
+              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
+                <Left>
+                  <View>
+                    <Text>{index + 1}. {item.name}</Text>
+                    <Text>{item.account}</Text>
+                  </View>
+                </Left>
+                <Right>
+                  <Text>{item.contact}</Text>
+                </Right>
+              </ListItem>
+            )
+          }}
+        />
+      );
+    }
   }
 
+  renderAccordionHeader = (item, expanded) => {
+    return (
+      <View 
+        style={{
+          flexDirection: "row",
+          padding: 10,
+          justifyContent: "space-between",
+          alignItems: "center" ,
+        }}
+      >
+        <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
+        {expanded
+          ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
+          : <Icon style={{ fontSize: 18 }} name="add-circle" />}
+      </View>
+    );
+  }
+  
   render() {
     return (
       <Container>
-      <Header span style={{alignItems:"flex-start", justifyContent:"center"}}>
-          <Body style={{flexDirection:'column'}}>
-            <Title>{user.name}</Title>
-            <Subtitle>{user.userType}</Subtitle>
-            <Thumbnail style={{alignSelf:"flex-end"}} source={{uri:'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg'}} />
-          </Body>
-        </Header>
-        <Content>
+        <Header style={styles.header}>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" style={{ color: 'white' }} />
+            </Button>  
+          </Left>
           <Body>
-            
+            <Title style={styles.headerTitle}>Account Details</Title>
           </Body>
+          <Right/>
+        </Header>
+        <Content style={styles.content}>
+          {/* ----- Account Information Section ------ */}
+          <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
+            <Text>Account Name: Mercy Hospital</Text>
+            <Text>Phone: 555-256-8909</Text>
+            <Text>Employees: 18,000</Text>
+            <Text>Industry: Medical</Text>
+            <Text>Billing Address: 456 Maryland Ave. Burlington, NC 27215, USA</Text>
+            <Text>Account Number: 394875</Text>
+            <Text>Website: https://mercyhealth.com</Text>
+            <Text>Rating: Hot</Text>
+            <Text>Medical Practices: Surgery</Text>
+            <Text>Shipping Address: 456 Maryland Ave, Burlington NC 27215 USA</Text>
+          </View>
+          {/* Accordions */}
+          <Accordion
+            dataArray={fakeRelatedLists} 
+            expanded={true}
+            renderContent={this.renderAccordionContent}
+            renderHeader={this.renderAccordionHeader}
+          />
         </Content>
       </Container>
     );

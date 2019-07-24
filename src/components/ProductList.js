@@ -19,13 +19,11 @@ const styles = StyleSheet.create({
     // elevation: 8,
   },
   itemName: {
-    color: Colors.wyngerGrey,
     fontSize: 18,
     fontWeight: 'bold'
   },
   itemIndustry: {
     fontSize: 16,
-    color: Colors.wyngerGrey
   }
 })
 export default class ProductList extends React.Component {

@@ -11,37 +11,17 @@ import {
   Content,
   Picker,
   Input,
-  Subtitle,
-  Thumbnail,
   Icon
 } from "native-base";
 
 import AccountList from '../components/AccountList'
 import Colors from '../constants/Colors';
 import { fakeAccounts, fakeAccountListViews, fakeUser } from "../utils";
+import UserHeader from '../components/UserHeader'
 
 const styles = StyleSheet.create({
   content: {
     backgroundColor: Colors.screenBackground
-  },
-  header: {
-    backgroundColor: Colors.wyngerRed,
-  },
-  headerContentWrapper: {
-    display: 'flex', 
-    flexDirection: 'row', 
-    width: '100%'
-  },
-  headerUserTextWrapper: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  headerUserAvatarWrapper: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-  headerUserAvatar: {
-    alignSelf: 'center'
   },
   searchItem: {
     marginHorizontal: 10,
@@ -69,23 +49,14 @@ export default class Accounts extends React.Component {
     this.setState({ selectedAccount: value });
   }
 
+  navigateToDetailsPage = (account) => {
+    this.props.navigation.navigate('AccountDetails');
+  }
+
   render() {
     return (
       <Container>
-        <Header span style={styles.header}>
-          <View style={styles.headerContentWrapper}>
-            <View style={styles.headerUserTextWrapper}>
-              <Title style={{ color: 'white' }}>{fakeUser.name}</Title>
-              <Subtitle style={{ color: 'white' }}>{fakeUser.userType}</Subtitle>
-            </View>
-            <View style={styles.headerUserAvatarWrapper}>
-              <Thumbnail
-                style={styles.headerUserAvatar}
-                source={{ uri: fakeUser.photoUrl }} 
-              />
-            </View>
-          </View>
-        </Header>
+        <UserHeader/>
         <Content style={styles.content}>
           <View style={styles.searchItem}>
             <Input 
@@ -125,7 +96,10 @@ export default class Accounts extends React.Component {
             )
           })}
           </Picker>
-          <AccountList accounts={fakeAccounts} />
+          <AccountList 
+            accounts={fakeAccounts} 
+            navigateToDetailsPage={this.navigateToDetailsPage} 
+          />
         </Content>
       </Container>
     );

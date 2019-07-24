@@ -1,4 +1,9 @@
-export const fakeUser = { name: 'Marky Mark', userType: 'The Funky Bunch', id: '001', photoUrl: 'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg' }
+export const fakeUser = { 
+  name: 'Marky Mark', 
+  userType: 'The Funky Bunch', 
+  id: '001', 
+  photoUrl: 'https://i.dailymail.co.uk/i/pix/2014/12/10/23C0FCDA00000578-0-image-m-3_1418220647087.jpg' 
+};
 
 export const fakeAccountListViews = [
   { id: 'sd09h87setr8h7', label: 'All Accounts', value: 'All' },
@@ -58,3 +63,58 @@ export const fakeProducts = [
   { id: 'sd09h8adf9g8adf7setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
   { id: 'sd09h8ad0f9gadfg7setr8h7', name: 'Hockey Kit 1', industry: 'Sports' },
 ];
+
+export const fakeContacts = [
+  { id: 'sd09h87setr8h7', name: 'Charlie Roth'},
+  { id: 'sd0a98fr7garfs', name: 'Nick Spencer'},
+  { id: 'sdas9fg788asfs', name: 'Bridget Bedel'},
+  { id: 'dsfajwehfahjkf', name: 'Richard Brainerd'},
+  { id: 'afg98afdsd09h8', name: 'Martin Luther King Jr.'},
+  { id: 'sd09h87as89fga', name: 'Frederick Douglas'},
+  { id: 'sd09h87saf89ga', name: 'Abraham Lincoln'},
+  { id: 'sdsdfasdf9g8ad', name: 'George Washington'},
+];
+
+export const fakeCases = [
+  {id: 's9df8hgsydf9h8', caseNumber: '349687', caseReason: 'Incorrect Format', caseStatus: 'New'},
+  {id: 's9df8asdfasdf8', caseNumber: '459867', caseReason: 'Patient Information Not Updating', caseStatus: 'Closed'},
+  {id: 's9dfdjkydtyfg8', caseNumber: '394568', caseReason: 'Contacts Not Showing', caseStatus: 'In Progress'},
+  {id: 's9dfdtyjdtyjt8', caseNumber: '987689', caseReason: 'Failure to communicate', caseStatus: 'New'},
+  {id: 'sdtyjdgsydf9h8', caseNumber: '349586', caseReason: 'Data not displayed', caseStatus: 'Closed'},
+  {id: 's9df8dgyjdf9h8', caseNumber: '506744', caseReason: 'Wrong industry displayed', caseStatus: 'New'},
+  {id: 's9aeryasetrdh8', caseNumber: '123678', caseReason: 'IDK', caseStatus: 'New'},
+  {id: 's9e567ue56sfg8', caseNumber: '987345', caseReason: 'User Error', caseStatus: 'In Progress'},
+];
+
+export const fakeNotesAttachments = [
+  {id: 'lk2h3h2kh3h5j1', name: 'screenshot.jpg', type: 'attachment'},
+  {id: 'asfdaw4y6335gw', name: 'user info', type: 'note'},
+  {id: '1jkl23h5bkajh4', name: 'problem.jpg', type: 'attachment'},
+  {id: 'kjh632hkjlh345', name: 'config notes', type: 'note'},
+  {id: 'akjh432l3456jj', name: 'athlete notes', type: 'note'},
+  {id: 'lk432l3kh3h5j1', name: 'patient notes', type: 'note'},
+  {id: 'l23h5bkkh3h5j1', name: 'athletes.xlsx', type: 'attachment'},
+  {id: 'aw4y6335g3h5j1', name: 'doctors.xlsx', type: 'attachment'},
+];
+
+export const fakeOps = [
+  {id: 's9df8hgsydf9h8', name: 'Shooting Sleeve kit', account: 'Dallas Athletics', contact: 'Dirk Nowitzki'},
+  {id: 's9df8asdfasdf8', name: 'Knee Replacement Kit', account: 'Hospital Chicago', contact: 'Dr. Allen Groan'},
+  {id: 's9dfdjkydtyfg8', name: 'Arm Brace Kit', account: 'Hospital New York', contact: 'Dr. Sarah Smith'},
+  {id: 's9dfdtyjdtyjt8', name: 'Shoulder X-ray Kit', account: 'Boston Sports', contact: 'Mookie Betts'},
+  {id: 'sdtyjdgsydf9h8', name: 'Toe Amputation Kit', account: 'Atlanta Sports Rehab', contact: 'Matt Ryan'},
+  {id: 's9df8dgyjdf9h8', name: 'Finger Nail Removal Kit', account: 'Hospital Miami', contact: 'Dr. Johnathan Gutierrez'},
+  {id: 's9aeryasetrdh8', name: 'Tounge Extension Kit', account: 'Hospital Boseman', contact: 'Dr. Martin Robbins'},
+  {id: 's9e567ue56sfg8', name: 'Forearm Kit', account: 'Hospital Seattle', contact: 'Dr. Russell Wilson'},
+];
+
+export const fakePriceBooks = [
+  {id: 'hkj1h23h521', name: 'Medical'},
+  {id: 'ajkh234jh31', name: 'Sports'}
+];
+
+export const fakeRelatedLists = [
+  { title: 'Contacts', content: fakeContacts },
+  { title: 'Cases', content: fakeCases },
+  { title: 'Opportunities', content: fakeOps }
+]
