@@ -26,19 +26,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
   }
 })
-export default class ProductList extends React.Component {
+export default class CaseList extends React.Component {
   
   keyExtractor = (item) => item.id;
 
-  renderProduct = ({ item, index }) => (
+  renderCase = ({ item, index }) => (
     <ListItem style={styles.item}>
       <Left>
         <View>
-          <Text style={styles.itemName}>{index + 1}.  {item.name}</Text>
-          <Text style={styles.itemIndustry}>{item.industry}</Text>
+          <Text style={styles.itemName}>{index + 1}.  {item.id}</Text>
+          <Text style={styles.itemIndustry}>{item.caseReason}</Text>
         </View>
       </Left>
       <Right>
+        <Text>{item.caseStatus}</Text>
         <Button transparent onPress={() => this.props.navigateToDetailsPage(item)}>
           <Icon type="Ionicons" name="ios-arrow-forward" style={{ color: Colors.wyngerGrey }} />
         </Button>
@@ -49,9 +50,9 @@ export default class ProductList extends React.Component {
   render() {
     return (
       <FlatList 
-        data={this.props.products}
+        data={this.props.accounts}
         keyExtractor={this.keyExtractor}
-        renderItem={this.renderProduct}
+        renderItem={this.renderCase}
       />
     );
   }
