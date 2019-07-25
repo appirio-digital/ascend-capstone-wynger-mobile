@@ -7,7 +7,7 @@ import AccountsScreen from './screens/Accounts';
 import AccountDetailsScreen from './screens/AccountDetail';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
 import Colors from './constants/Colors';
-//import AuthenticateScreen from './screens/Authenticate';
+import AuthenticateScreen from './screens/Authenticate';
 
 const AccountStackNavigator = createStackNavigator({
   Accounts: {
@@ -25,7 +25,7 @@ const AccountStackNavigator = createStackNavigator({
 });
 
 export const TabNavigator = createBottomTabNavigator({
-  //Auth: AuthenticateScreen,
+  Auth: AuthenticateScreen,
   Products: ProductsScreen,
   Accounts: AccountStackNavigator,
   Barcode: BarcodeScannerScreen,
@@ -38,6 +38,7 @@ export const TabNavigator = createBottomTabNavigator({
       if (routeName === 'Products')      iconName = 'ios-pricetags';
       else if (routeName === 'Accounts') iconName = 'ios-people';
       else if (routeName === 'Barcode')  iconName = 'ios-qr-scanner';
+      else iconName = 'ios-home'
 
       return (
         <Icon 

@@ -79,11 +79,11 @@ class Authenticate extends React.Component {
   async authorizeUser() {
     try {
       const { access_token } = JSON.parse(await this.getAsyncStorageToken());
-      if (!access_token) {
-        await this.signIn();
-      } else {
-        await this.verifyUser(access_token);
-      }
+      // if (!access_token) {
+      await this.signIn();
+      // } else {
+      //   await this.verifyUser(access_token);
+      // }
     } catch (error) {
       console.error('Error -- Authenticate.authorizeUser(): ', error);
       this.setState({
@@ -100,21 +100,22 @@ class Authenticate extends React.Component {
     this.setState({ result: {}, loading: true });
     
     // send user to salesforce login for authentication
-    const redirect_uri = AuthSession.getRedirectUrl();
-    const options = {
-      authUrl: `http://localhost:3000/authenticate?redirect_uri=${redirect_uri}`
-    };
+    const redirectUrl = AuthSession.getRedirectUrl();
+    console.log('encodeURIComponent(redirectUrl): ', encodeURIComponent(redirectUrl));
+    console.log('final URL: ', `${DotEnv.SF.OAUTH_URL}?redirect_uri=${encodeURIComponent(redirectUrl)}`)
+    const result = await AuthSession.startAsync({
+      authUrl: `${DotEnv.SF.OAUTH_URL}?redirect_uri=${encodeURIComponent(redirectUrl)}`
+    });
+    console.log('result: ', result);
+    // this.setState({ result });
 
-    const result = await AuthSession.startAsync(options);
-    this.setState({ result });
-
-    if (result.type === 'success') {
-      await this.setAsyncStorageCurrentToken(result.params);
-      const { access_token } = JSON.parse(await this.getAsyncStorageToken());
-      await this.verifyUser(access_token);
-    } else {
-      this.setState({ loading: false });
-    }
+    // if (result.type === 'success') {
+    //   await this.setAsyncStorageCurrentToken(result.params);
+    //   const { access_token } = JSON.parse(await this.getAsyncStorageToken());
+    //   await this.verifyUser(access_token);
+    // } else {
+    //   this.setState({ loading: false });
+    // }
   }
 
   verifyUser = async access_token => {
