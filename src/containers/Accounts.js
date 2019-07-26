@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { fetchAllAccounts } from '../actions/accounts';
+import { fetchAllAccounts } from '../store/actions/accounts';
 
 import AccountsScreen from '../screens/Accounts';
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { fetchAllProducts } from '../actions/products';
+import { fetchAllProducts } from '../store/actions/products';
 
 import ProductsScreen from '../screens/Products';
 

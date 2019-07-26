@@ -5,7 +5,6 @@ import { Icon } from 'native-base'
 import Accounts from './containers/Accounts';
 import Products from './containers/Products';
 
-import ProductsScreen from './screens/Products';
 import AccountDetailsScreen from './screens/AccountDetail';
 import ProductDetailsScreen from './screens/ProductDetail';
 import CaseDetailsScreen from './screens/CaseDetail';
@@ -44,7 +43,7 @@ const AccountStackNavigator = createStackNavigator({
 
 const ProductStackNavigator = createStackNavigator({
   Products: {
-    screen: ProductsScreen,
+    screen: Products,
     navigationOptions: { header: null }
   },
   ProductDetails: {
