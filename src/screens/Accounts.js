@@ -18,7 +18,11 @@ import AccountList from '../components/AccountList'
 import UserHeader from '../components/UserHeader'
 
 import Colors from '../constants/Colors';
-import { fakeAccounts, fakeAccountListViews, fakeUser } from "../utils";
+import { fakeAccountListViews } from "../utils";
+
+import { fetchAllAccounts } from '../store/actions/accounts';
+import { fetchAllContacts } from '../store/actions/contacts';
+import { fetchAllCases } from '../store/actions/cases';
 
 
 const styles = StyleSheet.create({
@@ -48,15 +52,17 @@ export default class Accounts extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchAllAccounts();
+    this.props.dispatch(fetchAllAccounts());
+    this.props.dispatch(fetchAllContacts());
+    this.props.dispatch(fetchAllCases());
   }
 
   onSelectedAccountValueChange = (value) => {
     this.setState({ selectedAccount: value });
   }
 
-  navigateToDetailsPage = (account) => {
-    this.props.navigation.push('AccountDetails');
+  navigateToDetailsPage = (item) => {
+    this.props.navigation.push('AccountDetails', { item });
   }
 
   render() {
@@ -103,7 +109,8 @@ export default class Accounts extends React.Component {
           })}
           </Picker>
           <AccountList 
-            accounts={fakeAccounts} 
+            fetchingAccounts={this.props.fetchAllAccounts}
+            accounts={this.props.accounts} 
             navigateToDetailsPage={this.navigateToDetailsPage} 
           />
         </Content>

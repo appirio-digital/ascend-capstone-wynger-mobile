@@ -4,9 +4,9 @@ import { PRODUCTS } from '../actionType';
 
 // initial state
 let initialState = {
-  data: null,
+  data: [],
   fetching: false,
-  fetchError: null
+  fetchError: ''
 };
 
 // selectors
@@ -22,8 +22,10 @@ const productsReducer = (state = initialState, action) =>
         draft.fetching = action.payload;
       case PRODUCTS.FETCH_PRODUCTS_SUCCESS:
         draft.data = action.payload;
+        draft.fetching = false;
       case PRODUCTS.FETCH_PRODUCTS_FAILURE:
-        draft.fetchError = action.payload
+        draft.fetchError = action.payload;
+        draft.fetching = false;
     }  
   });
 

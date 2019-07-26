@@ -1,33 +1,26 @@
 import { CONTACTS } from '../actionType';
 
 export const fetchAllContacts = () => {
-  return async dispatch => {
-    try {
-      dispatch(setFetching(true));
-      const res = await fetch('http://localhost:3000/contacts');
-      const data = await res.json();
-      console.log('fetchAllCases data: ', data);
-      dispatch(fetchContactsSuccess(data));
-      dispatch(setFetching(false));
-    } catch (error) {
-      console.log('fetchAllCases error: ', error);
-      dispatch(fetchCasesFailure(error));
-      dispatch(setFetching(false));
-    }
+  return (dispatch) => {
+    dispatch(setFetching(true));
+    fetch('http://172.16.7.84:3000/contacts', { method: 'GET' })
+      .then(response => response.json())
+      .then(contactsData => dispatch(fetchContactsSuccess(contactsData)))
+      .catch(error => dispatch(fetchContactsFailure(error)));  
   }
 }
 
 const setFetching = (value) => ({
   type: CONTACTS.FETCHING_CONTACTS,
-  payload: true
+  payload: value
 });
 
-const fetchContactsSuccess = (data) => ({
+const fetchContactsSuccess = (contactsData) => ({
   type: CONTACTS.FETCH_CONTACTS_SUCCESS,
-  payload: data
+  payload: contactsData.data
 });
 
-const fetchContactsFailure = (data) => ({
+const fetchContactsFailure = (error) => ({
   type: CONTACTS.FETCH_CONTACTS_FAILURE,
-  payload: data
+  payload: error
 });

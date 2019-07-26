@@ -1,33 +1,26 @@
 import { ACCOUNTS } from '../actionType';
 
 export const fetchAllAccounts = () => {
-  return async dispatch => {
-    try {
-      dispatch(setFetching(true));
-      const res = await fetch('http://localhost:3000/accounts');
-      const data = await res.json();
-      console.log('data: ', data);
-      dispatch(fetchAccountsSuccess(data));
-      dispatch(setFetching(false));
-    } catch (error) {
-      console.log('fetchAllAccounts error: ', error);
-      dispatch(fetchAccountsFailure(error));
-      dispatch(setFetching(false));
-    }
+  return (dispatch) => {
+    dispatch(setFetching(true));
+    fetch('http://172.16.7.84:3000/accounts', { method: 'GET' })
+      .then(response => response.json())
+      .then(accountsData => dispatch(fetchAccountsSuccess(accountsData)))
+      .catch(error => dispatch(fetchAccountsFailure(error)));
   }
 }
 
 const setFetching = (value) => ({
   type: ACCOUNTS.FETCHING_ACCOUNTS,
-  payload: true
+  payload: value
 });
 
-const fetchAccountsSuccess = (data) => ({
+const fetchAccountsSuccess = (accountsData) => ({
   type: ACCOUNTS.FETCH_ACCOUNTS_SUCCESS,
-  payload: data
+  payload: accountsData.data,
 });
 
-const fetchAccountsFailure = (data) => ({
+const fetchAccountsFailure = (error) => ({
   type: ACCOUNTS.FETCH_ACCOUNTS_FAILURE,
-  payload: data
+  payload: error
 });

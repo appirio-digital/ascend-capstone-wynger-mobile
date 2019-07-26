@@ -38,23 +38,6 @@ const styles = StyleSheet.create({
 export default class ProductDetail extends React.Component {
   
   renderAccordionContent = (accordionContent) => {
-
-    if (accordionContent.title === 'Notes & Attachments') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Text>{index + 1}. {item.name}</Text>
-              </ListItem>
-            )
-          }}
-        />
-      );
-    }
-
     if (accordionContent.title === 'Cases') {
       return (
           <FlatList
@@ -62,43 +45,17 @@ export default class ProductDetail extends React.Component {
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => {
               return (
-                <TouchableOpacity onPress={() => this.props.navigation.push('CaseDetails')}>
-                  <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                    <Left>
-                      <View>
-                        <Text>{index + 1}. {item.caseNumber}</Text>
-                        <Text>{item.caseReason}</Text>
-                      </View>
-                    </Left>
-                    <Right>
-                      <Text>{item.caseStatus}</Text>
-                    </Right>
-                  </ListItem>
-                </TouchableOpacity>
-            )
-          }}
-        />
-      );
-    }
-
-    if (accordionContent.title === 'Opportunities') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.name}</Text>
-                    <Text>{item.account}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.contact}</Text>
-                </Right>
-              </ListItem>
+                <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails')}>
+                  <Left>
+                    <View>
+                      <Text>{index + 1}. {item.caseNumber}</Text>
+                      <Text>{item.caseReason}</Text>
+                    </View>
+                  </Left>
+                  <Right>
+                    <Text>{item.caseStatus}</Text>
+                  </Right>
+                </ListItem>
             )
           }}
         />
@@ -108,42 +65,6 @@ export default class ProductDetail extends React.Component {
 
   renderAccordionHeader = (item, expanded) => {
     if(item.title === 'Cases') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-
-    if(item.title === 'Opportunities') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-
-    if(item.title === 'Notes & Attachments') {
       return (
         <View 
           style={{

@@ -4,7 +4,7 @@ import { ACCOUNTS } from '../actionType';
 
 // initial state
 const initialState = {
-  data: null,
+  data: [],
   fetching: false,
   fetchError: null
 };
@@ -22,8 +22,10 @@ const accountsReducer = (state = initialState, action) =>
         draft.fetching = action.payload;
       case ACCOUNTS.FETCH_ACCOUNTS_SUCCESS:
         draft.data = action.payload;
+        draft.fetching = false;
       case ACCOUNTS.FETCH_ACCOUNTS_FAILURE:
         draft.fetchError = action.payload
+        draft.fetching = false;
     }  
   });
 

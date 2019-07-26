@@ -6,19 +6,15 @@ import {
   Content,
   Accordion,
   Header,
-  Title,
   Left,
   Right,
-  Subtitle,
   Button,
   Icon,
   ListItem
 } from 'native-base';
+import { connect } from 'react-redux'
 
 import Colors from '../constants/Colors';
-import { fakeRelatedLists } from '../utils';
-
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   header: {
@@ -35,20 +31,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class AccountDetail extends React.Component {
+class AccountDetail extends React.Component {
   renderAccordionContent = (accordionContent) => {
     if (accordionContent.title === 'Contacts') {
       return (
         <FlatList
           data={accordionContent.content}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.sfid}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => this.props.navigation.push('ContactDetails')}>
-                <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                  <Text>{index + 1}. {item.name}</Text>
-                </ListItem>
-              </TouchableOpacity>
+              <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('ContactDetails', { item })}>
+                <Text>{`${index + 1}. ${item.name || ''}`}</Text>
+              </ListItem>
             )
           }}
         />
@@ -59,48 +53,20 @@ export default class AccountDetail extends React.Component {
       return (
         <FlatList
           data={accordionContent.content}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.sfid}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => this.props.navigation.push('CaseDetails')}>
-                <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                  <Left>
-                    <View>
-                      <Text>{index + 1}. {item.caseNumber}</Text>
-                      <Text>{item.caseReason}</Text>
-                    </View>
-                  </Left>
-                  <Right>
-                    <Text>{item.caseStatus}</Text>
-                  </Right>
-                </ListItem>
-              </TouchableOpacity>
-            )
-          }}
-        />
-      );
-    }
-
-    if (accordionContent.title === 'Opportunities') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <TouchableOpacity onPress={() => this.props.navigation.push('OpportunityDetails')}>
-                <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                  <Left>
-                    <View>
-                      <Text>{index + 1}. {item.name}</Text>
-                      <Text>{item.account}</Text>
-                    </View>
-                  </Left>
-                  <Right>
-                    <Text>{item.contact}</Text>
-                  </Right>
-                </ListItem>
-              </TouchableOpacity>
+              <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
+                <Left>
+                  <View>
+                    <Text>{index + 1}. {item.subject}</Text>
+                    <Text>{item.casenumber}</Text>
+                  </View>
+                </Left>
+                <Right>
+                  <Text>{item.priority}</Text>
+                </Right>
+              </ListItem>
             )
           }}
         />
@@ -143,26 +109,10 @@ export default class AccountDetail extends React.Component {
         </View>
       );
      }
-     if(item.title === 'Opportunities') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-     }
   }
   
   render() {
+    const { item } = this.props.navigation.state.params;
     return (
       <Container>
         <Header style={styles.header}>
@@ -172,27 +122,26 @@ export default class AccountDetail extends React.Component {
             </Button>  
           </Left>
           <Body>
-            <Title style={styles.headerTitle}>Account Details</Title>
+            <Text style={styles.headerTitle}>Account Details</Text>
           </Body>
           <Right/>
         </Header>
         <Content style={styles.content}>
           {/* ----- Account Information Section ------ */}
           <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Account Name: Mercy Hospital</Text>
-            <Text>Phone: 555-256-8909</Text>
-            <Text>Employees: 18,000</Text>
-            <Text>Industry: Medical</Text>
-            <Text>Billing Address: 456 Maryland Ave. Burlington, NC 27215, USA</Text>
-            <Text>Account Number: 394875</Text>
-            <Text>Website: https://mercyhealth.com</Text>
-            <Text>Rating: Hot</Text>
-            <Text>Medical Practices: Surgery</Text>
-            <Text>Shipping Address: 456 Maryland Ave, Burlington NC 27215 USA</Text>
+            <Text>Account Name: {item.name || ''}</Text>
+            <Text>Phone: {item.phone || ''}</Text>
+            <Text>Industry: {item.industries__c || ''}</Text>
+            <Text>Shipping Address: {`${item.shippingstreet || ''} ${item.shippingcity || ''}, ${item.shippingstate || ''} ${item.shippingpostalcode || ''} ${item.shippingcountry || ''}`}</Text>
+            <Text>Website: {item.website || ''}</Text>
+            <Text>Medical Practices: {item.medical_practices_c || ''}</Text>
           </View>
           {/* Accordions */}
           <Accordion
-            dataArray={fakeRelatedLists} 
+            dataArray={[
+              {title: 'Cases', content: this.props.cases},
+              {title: 'Contacts', content: this.props.contacts}
+            ]} 
             expanded={true}
             renderContent={this.renderAccordionContent}
             renderHeader={this.renderAccordionHeader}
@@ -203,3 +152,9 @@ export default class AccountDetail extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  contacts: state.contacts.data,
+  cases: state.cases.data
+});
+
+export default connect(mapStateToProps)(AccountDetail);

@@ -4,9 +4,9 @@ import { CONTACTS } from '../actionType';
 
 // initial state
 let initialState = {
-  data: null,
+  data: [],
   fetching: false,
-  fetchError: null
+  fetchError: ''
 };
 
 // selectors
@@ -22,8 +22,10 @@ const contactsReducer = (state = initialState, action) =>
         draft.fetching = action.payload;
       case CONTACTS.FETCH_CONTACTS_SUCCESS:
         draft.data = action.payload;
+        draft.fetching = false;
       case CONTACTS.FETCH_CONTACTS_FAILURE:
-        draft.fetchError = action.payload
+        draft.fetchError = action.payload;
+        draft.fetching = false;
     }  
   });
 

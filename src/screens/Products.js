@@ -16,8 +16,12 @@ import {
 
 import ProductList from '../components/ProductList';
 import Colors from '../constants/Colors';
-import { fakeProducts, fakeProductListViews, fakeUser } from "../utils";
+import { fakeProductListViews } from "../utils";
+
 import UserHeader from '../components/UserHeader';
+
+import { fetchAllProducts } from '../store/actions/products';
+import { fetchAllCases } from '../store/actions/cases';
 
 const styles = StyleSheet.create({
   content: {
@@ -44,12 +48,17 @@ export default class Products extends React.Component {
     selectedProduct: fakeProductListViews[0].value
   }
 
+  componentDidMount() {
+    this.props.dispatch(fetchAllProducts());
+    this.props.dispatch(fetchAllCases());
+  }
+
   onSelectedProductValueChange = (value) => {
     this.setState({ selectedProduct: value });
   }
 
-  navigateToDetailsPage = (product) => {
-    this.props.navigation.push('ProductDetails');
+  navigateToDetailsPage = (item) => {
+    this.props.navigation.push('ProductDetails', { item });
   }
   
   render() {
@@ -96,7 +105,8 @@ export default class Products extends React.Component {
           })}
           </Picker>
           <ProductList 
-            products={fakeProducts}            
+            fetchingProducts={this.props.fetchingProducts}
+            products={this.props.products}            
             navigateToDetailsPage={this.navigateToDetailsPage}
           />
         </Content>

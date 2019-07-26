@@ -1,19 +1,12 @@
 import { PRODUCTS } from '../actionType';
 
 export const fetchAllProducts = () => {
-  return async dispatch => {
-    try {
-      dispatch(setFetching(true));
-      const res = await fetch('http://localhost:3000/products');
-      const data = await res.json();
-      console.log('fetchAllProducts() data: ', data);
-      dispatch(fetchProductsSuccess(data));
-      dispatch(setFetching(false));
-    } catch (error) {
-      console.log('fetchAllProducts() error: ', error);
-      dispatch(fetchProductsFailure(error));
-      dispatch(setFetching(false));
-    }
+  return (dispatch) => {
+    dispatch(setFetching(true));
+    fetch('http://172.16.7.84:3000/products', { method: 'GET' })
+      .then(response => response.json())
+      .then(productsData => dispatch(fetchProductsSuccess(productsData)))
+      .catch(error => dispatch(fetchProductsFailure(error)));
   }
 }
 
@@ -22,9 +15,9 @@ const setFetching = (value) => ({
   payload: true
 });
 
-const fetchProductsSuccess = (data) => ({
+const fetchProductsSuccess = (productsData) => ({
   type: PRODUCTS.FETCH_PRODUCTS_SUCCESS,
-  payload: data
+  payload: productsData.data
 });
 
 const fetchProductsFailure = (error) => ({

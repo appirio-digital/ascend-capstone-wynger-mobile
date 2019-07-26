@@ -4,9 +4,9 @@ import { CASES } from '../actionType';
 
 // initial state
 let initialState = {
-  data: null,
+  data: [],
   fetching: false,
-  fetchError: null
+  fetchError: ''
 };
 
 // selectors
@@ -22,8 +22,10 @@ const casesReducer = (state = initialState, action) =>
         draft.fetching = action.payload;
       case CASES.FETCH_CASES_SUCCESS:
         draft.data = action.payload;
+        draft.fetching = false;
       case CASES.FETCH_CASES_FAILURE:
         draft.fetchError = action.payload
+        draft.fetching = false;
     }  
   });
 

@@ -201,6 +201,7 @@ export default class CaseDetail extends React.Component {
   }
   
   render() {
+    const { item } = this.props.navigation.state.params;
     return (
       <Container>
         <Header style={styles.header}>
@@ -215,13 +216,12 @@ export default class CaseDetail extends React.Component {
           <Right/>
         </Header>
         <Content style={styles.content}>
-          {/* ----- Account Information Section ------ */}
+          {/* ----- Case Information Section ------ */}
           <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Case Number: 1234</Text>
-            <Text>Case Status: New</Text>
-            <Text>Account: Hospital 1</Text>
-            <Text>Industry: Medical</Text>
-            <Text>Case Reason: Product Failure</Text>
+            <Text>Case Number: {item.casenumber || ''}</Text>
+            <Text>Case Status: {item.status || ''}</Text>
+            <Text>Industry: {item.industry__c}</Text>
+            <Text>Case Reason: {item.reason}</Text>
           </View>
           {/* Accordions */}
           <Accordion

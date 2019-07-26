@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
 })
 export default class AccountList extends React.Component {
   
-  keyExtractor = (item) => item.id;
+  keyExtractor = (item) => item.sfid;
 
   renderAccount = ({ item, index }) => (
     <ListItem style={styles.item}>
       <Left>
         <View>
-          <Text style={styles.itemName}>{index + 1}.  {item.name}</Text>
-          <Text style={styles.itemIndustry}>{item.industry}</Text>
+          <Text style={styles.itemName}>{`${index + 1}.  ${item.name || ''}`}</Text>
+          <Text style={styles.itemIndustry}>{item.industries__c || ''}</Text>
         </View>
       </Left>
       <Right>
@@ -47,6 +47,11 @@ export default class AccountList extends React.Component {
   );
   
   render() {
+    if (this.props.fetchingAccounts) {
+      return (
+        <Text>Loading...</Text>
+      )
+    }
     return (
       <FlatList 
         data={this.props.accounts}

@@ -1,33 +1,26 @@
 import { CASES } from '../actionType';
 
 export const fetchAllCases = () => {
-  return async dispatch => {
-    try {
-      dispatch(setFetching(true));
-      const res = await fetch('http://localhost:3000/cases');
-      const data = await res.json();
-      console.log('fetchAllCases data: ', data);
-      dispatch(fetchCasesSuccess(data));
-      dispatch(setFetching(false));
-    } catch (error) {
-      console.log('fetchAllCases error: ', error);
-      dispatch(fetchCasesFailure(error));
-      dispatch(setFetching(false));
-    }
+  return (dispatch) => {
+    dispatch(setFetching(true));
+    fetch('http://172.16.7.84:3000/cases', { method: 'GET' })
+      .then(response => response.json())
+      .then(casesData => dispatch(fetchCasesSuccess(casesData)))
+      .catch(error => dispatch(fetchCasesFailure(error)));  
   }
 }
 
 const setFetching = (value) => ({
   type: CASES.FETCHING_CASES,
-  payload: true
+  payload: value
 });
 
-const fetchCasesSuccess = (data) => ({
+const fetchCasesSuccess = (casesData) => ({
   type: CASES.FETCH_CASES_SUCCESS,
-  payload: data
+  payload: casesData.data
 });
 
-const fetchCasesFailure = (data) => ({
+const fetchCasesFailure = (error) => ({
   type: CASES.FETCH_CASES_FAILURE,
-  payload: data
+  payload: error
 });

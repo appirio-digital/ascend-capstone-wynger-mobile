@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
 })
 export default class ProductList extends React.Component {
   
-  keyExtractor = (item) => item.id;
+  keyExtractor = (item) => item.sfid;
 
   renderProduct = ({ item, index }) => (
     <ListItem style={styles.item}>
       <Left>
         <View>
-          <Text style={styles.itemName}>{index + 1}.  {item.name}</Text>
-          <Text style={styles.itemIndustry}>{item.industry}</Text>
+          <Text style={styles.itemName}>{`${index + 1}.  ${item.name}`}</Text>
+          <Text style={styles.itemIndustry}>{item.industry__c}</Text>
         </View>
       </Left>
       <Right>
@@ -47,6 +47,11 @@ export default class ProductList extends React.Component {
   );
   
   render() {
+    if (this.props.fetchingProducts) {
+      return (
+        <Text>Loading...</Text>
+      )
+    }
     return (
       <FlatList 
         data={this.props.products}

@@ -1,20 +1,11 @@
 import { connect } from 'react-redux';
 
-import { fetchAllProducts } from '../store/actions/products';
-
 import ProductsScreen from '../screens/Products';
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   products: state.products.data,
-  fetchingAccount: state.products.fetching,
+  fetchingProducts: state.products.fetching,
   fetchError: state.products.fetchError
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchAllProducts: dispatch(fetchAllProducts())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductsScreen);
+export default connect(mapStateToProps)(ProductsScreen);
