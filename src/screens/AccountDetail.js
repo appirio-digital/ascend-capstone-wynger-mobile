@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
 });
 
 export default class AccountDetail extends React.Component {
-  
   renderAccordionContent = (accordionContent) => {
     if (accordionContent.title === 'Contacts') {
       return (

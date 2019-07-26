@@ -2,20 +2,22 @@ import React from 'react';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { Icon } from 'native-base'
 
+import Accounts from './containers/Accounts';
+import Products from './containers/Products';
+
 import ProductsScreen from './screens/Products';
-import AccountsScreen from './screens/Accounts';
 import AccountDetailsScreen from './screens/AccountDetail';
 import ProductDetailsScreen from './screens/ProductDetail';
 import CaseDetailsScreen from './screens/CaseDetail';
 import ContactDetailsScreen from './screens/ContactDetail';
 import OpportunityDetailsScreen from './screens/OpportunityDetail';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
+
 import Colors from './constants/Colors';
-//import AuthenticateScreen from './screens/Authenticate';
 
 const AccountStackNavigator = createStackNavigator({
   Accounts: {
-    screen: AccountsScreen,
+    screen: Accounts,
     navigationOptions: { header: null }
   },
   AccountDetails: {
@@ -62,7 +64,6 @@ const ProductStackNavigator = createStackNavigator({
 
 
 export const TabNavigator = createBottomTabNavigator({
-  //Auth: AuthenticateScreen,
   Products: ProductStackNavigator,
   Accounts: AccountStackNavigator,
   Barcode: BarcodeScannerScreen,
@@ -75,6 +76,7 @@ export const TabNavigator = createBottomTabNavigator({
       if (routeName === 'Products')      iconName = 'ios-pricetags';
       else if (routeName === 'Accounts') iconName = 'ios-people';
       else if (routeName === 'Barcode')  iconName = 'ios-qr-scanner';
+      else iconName = 'ios-home'
 
       return (
         <Icon 

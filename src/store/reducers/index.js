@@ -1,9 +1,15 @@
 import { combineReducers } from 'redux';
 
+import accounts from './accounts';
 import app from './app';
-import user from './user';
+import cases from './cases';
+import contacts from './contacts';
+import products from './products';
 
 export default combineReducers({
+  accounts,
   app,
-  user,
+  cases,
+  contacts,
+  products
 });

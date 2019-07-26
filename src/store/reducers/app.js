@@ -1,12 +1,24 @@
-import { handleActions } from 'redux-actions';
+import produce from 'immer';
+
 import { APP } from '../actionType';
 
-const initialState = {
-  loading: false,
+// initial state
+let initialState = {
+  loading: true
 };
 
-export default handleActions({
-  [APP.SET_LOADING]: function(state = initialState, action) {
-    return { loading: action.payload };
-  },
-}, initialState);
+// selectors
+export const isLoading = (state) => {
+  return state.app.loading;
+}
+
+// reducer
+const appReducer = (state = initialState, action) =>
+  produce(state, draft => {
+    switch(action.type) {
+      case APP.SET_LOADING:
+        draft.loading = action.payload;
+    }  
+  });
+
+export default appReducer;
