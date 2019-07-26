@@ -50,7 +50,7 @@ export default class Accounts extends React.Component {
   }
 
   navigateToDetailsPage = (account) => {
-    this.props.navigation.navigate('AccountDetails');
+    this.props.navigation.push('AccountDetails');
   }
 
   render() {

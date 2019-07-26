@@ -5,6 +5,10 @@ import { Icon } from 'native-base'
 import ProductsScreen from './screens/Products';
 import AccountsScreen from './screens/Accounts';
 import AccountDetailsScreen from './screens/AccountDetail';
+import ProductDetailsScreen from './screens/ProductDetail';
+import CaseDetailsScreen from './screens/CaseDetail';
+import ContactDetailsScreen from './screens/ContactDetail';
+import OpportunityDetailsScreen from './screens/OpportunityDetail';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
 import Colors from './constants/Colors';
 //import AuthenticateScreen from './screens/Authenticate';
@@ -17,6 +21,18 @@ const AccountStackNavigator = createStackNavigator({
   AccountDetails: {
     screen: AccountDetailsScreen,
     navigationOptions: { header: null, tabBarVisible: false }
+  },
+  ContactDetails: {
+    screen: ContactDetailsScreen,
+    navigationOptions: { header: null, tabBarVisible: false }
+  },
+  OpportunityDetails: {
+    screen: OpportunityDetailsScreen,
+    navigationOptions: { header: null, tabBarVisible: false }
+  },
+  CaseDetails: {
+    screen: CaseDetailsScreen,
+    navigationOptions: { header: null }
   }
 }, {
   navigationOptions: ({ navigation }) => ({ // disables the tab bar for the AccountDetails route
@@ -24,9 +40,30 @@ const AccountStackNavigator = createStackNavigator({
   })
 });
 
+const ProductStackNavigator = createStackNavigator({
+  Products: {
+    screen: ProductsScreen,
+    navigationOptions: { header: null }
+  },
+  ProductDetails: {
+    screen: ProductDetailsScreen,
+    navigationOptions: { header: null, tabBarVisible: false }
+  },
+  CaseDetails: {
+    screen: CaseDetailsScreen,
+    navigationOptions: { header: null }
+  },
+}, {
+  navigationOptions: ({ navigation }) => ({ // disables the tab bar for the AccountDetails route
+    tabBarVisible: navigation.state.index === 0 
+  })
+});
+
+
+
 export const TabNavigator = createBottomTabNavigator({
   //Auth: AuthenticateScreen,
-  Products: ProductsScreen,
+  Products: ProductStackNavigator,
   Accounts: AccountStackNavigator,
   Barcode: BarcodeScannerScreen,
 }, {
