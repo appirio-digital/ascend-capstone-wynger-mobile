@@ -29,6 +29,10 @@ const AccountStackNavigator = createStackNavigator({
   OpportunityDetails: {
     screen: OpportunityDetailsScreen,
     navigationOptions: { header: null, tabBarVisible: false }
+  },
+  CaseDetails: {
+    screen: CaseDetailsScreen,
+    navigationOptions: { header: null }
   }
 }, {
   navigationOptions: ({ navigation }) => ({ // disables the tab bar for the AccountDetails route
