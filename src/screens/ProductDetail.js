@@ -149,7 +149,7 @@ export default class ProductDetail extends React.Component {
       <Container>
         <Header style={styles.header}>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.props.navigation.pop()}>
               <Icon name="arrow-back" style={{ color: 'white' }} />
             </Button>  
           </Left>

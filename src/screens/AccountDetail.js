@@ -45,7 +45,7 @@ export default class AccountDetail extends React.Component {
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('ContactDetails')}>
+              <TouchableOpacity onPress={() => this.props.navigation.push('ContactDetails')}>
                 <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
                   <Text>{index + 1}. {item.name}</Text>
                 </ListItem>
@@ -63,7 +63,7 @@ export default class AccountDetail extends React.Component {
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('CaseDetails')}>
+              <TouchableOpacity onPress={() => this.props.navigation.push('CaseDetails')}>
                 <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
                   <Left>
                     <View>
@@ -166,7 +166,7 @@ export default class AccountDetail extends React.Component {
       <Container>
         <Header style={styles.header}>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.props.navigation.pop()}>
               <Icon name="arrow-back" style={{ color: 'white' }} />
             </Button>  
           </Left>
