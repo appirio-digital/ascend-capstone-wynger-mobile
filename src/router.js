@@ -2,16 +2,18 @@ import React from 'react';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { Icon } from 'native-base'
 
+import Accounts from './containers/Accounts';
+import Products from './containers/Products';
+
 import ProductsScreen from './screens/Products';
-import AccountsScreen from './screens/Accounts';
 import AccountDetailsScreen from './screens/AccountDetail';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
+
 import Colors from './constants/Colors';
-import AuthenticateScreen from './screens/Authenticate';
 
 const AccountStackNavigator = createStackNavigator({
   Accounts: {
-    screen: AccountsScreen,
+    screen: Accounts,
     navigationOptions: { header: null }
   },
   AccountDetails: {
@@ -25,8 +27,7 @@ const AccountStackNavigator = createStackNavigator({
 });
 
 export const TabNavigator = createBottomTabNavigator({
-  Auth: AuthenticateScreen,
-  Products: ProductsScreen,
+  Products: { screen: Products },
   Accounts: AccountStackNavigator,
   Barcode: BarcodeScannerScreen,
 }, {

@@ -15,9 +15,11 @@ import {
 } from "native-base";
 
 import AccountList from '../components/AccountList'
+import UserHeader from '../components/UserHeader'
+
 import Colors from '../constants/Colors';
 import { fakeAccounts, fakeAccountListViews, fakeUser } from "../utils";
-import UserHeader from '../components/UserHeader'
+
 
 const styles = StyleSheet.create({
   content: {
@@ -43,6 +45,10 @@ export default class Accounts extends React.Component {
 
   state = {
     selectedAccount: fakeAccountListViews[0].value
+  }
+
+  componentDidMount() {
+    this.props.fetchAllAccounts();
   }
 
   onSelectedAccountValueChange = (value) => {
@@ -104,5 +110,4 @@ export default class Accounts extends React.Component {
       </Container>
     );
   }
-}
-
+};
