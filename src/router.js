@@ -8,7 +8,7 @@ import AccountDetailsScreen from './screens/AccountDetail';
 import ProductDetailsScreen from './screens/ProductDetail';
 import CaseDetailsScreen from './screens/CaseDetail';
 import ContactDetailsScreen from './screens/ContactDetail';
-import OpportunityDetailsScreen from './screens/OpportunityDetail'
+import OpportunityDetailsScreen from './screens/OpportunityDetail';
 import BarcodeScannerScreen from './screens/BarcodeScanner';
 import Colors from './constants/Colors';
 //import AuthenticateScreen from './screens/Authenticate';
@@ -52,7 +52,7 @@ const ProductStackNavigator = createStackNavigator({
   CaseDetails: {
     screen: CaseDetailsScreen,
     navigationOptions: { header: null }
-  }
+  },
 }, {
   navigationOptions: ({ navigation }) => ({ // disables the tab bar for the AccountDetails route
     tabBarVisible: navigation.state.index === 0 

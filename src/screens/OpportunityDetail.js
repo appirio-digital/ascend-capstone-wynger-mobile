@@ -154,7 +154,7 @@ export default class ProductDetail extends React.Component {
             </Button>  
           </Left>
           <Body>
-            <Title style={styles.headerTitle}>Product Detail</Title>
+            <Title style={styles.headerTitle}>Opportunity Detail</Title>
           </Body>
           <Right/>
         </Header>

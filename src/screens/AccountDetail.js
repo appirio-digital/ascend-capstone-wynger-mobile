@@ -89,17 +89,19 @@ export default class AccountDetail extends React.Component {
           keyExtractor={(item) => item.id}
           renderItem={({ item, index }) => {
             return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.name}</Text>
-                    <Text>{item.account}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.contact}</Text>
-                </Right>
-              </ListItem>
+              <TouchableOpacity onPress={() => this.props.navigation.push('OpportunityDetails')}>
+                <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
+                  <Left>
+                    <View>
+                      <Text>{index + 1}. {item.name}</Text>
+                      <Text>{item.account}</Text>
+                    </View>
+                  </Left>
+                  <Right>
+                    <Text>{item.contact}</Text>
+                  </Right>
+                </ListItem>
+              </TouchableOpacity>
             )
           }}
         />
