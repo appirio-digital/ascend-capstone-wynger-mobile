@@ -1,16 +1,16 @@
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon } from 'native-base'
 
 import Accounts from './containers/Accounts';
 import Products from './containers/Products';
 
+import LoginScreen from './screens/Login';
 import AccountDetailsScreen from './screens/AccountDetail';
 import ProductDetailsScreen from './screens/ProductDetail';
 import CaseDetailsScreen from './screens/CaseDetail';
 import ContactDetailsScreen from './screens/ContactDetail';
 import OpportunityDetailsScreen from './screens/OpportunityDetail';
-import BarcodeScannerScreen from './screens/BarcodeScanner';
 
 import Colors from './constants/Colors';
 
@@ -60,12 +60,9 @@ const ProductStackNavigator = createStackNavigator({
   })
 });
 
-
-
 export const TabNavigator = createBottomTabNavigator({
   Products: ProductStackNavigator,
   Accounts: AccountStackNavigator,
-  Barcode: BarcodeScannerScreen,
 }, {
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ tintColor }) => {
@@ -92,6 +89,11 @@ export const TabNavigator = createBottomTabNavigator({
     inactiveTintColor: Colors.wyngerGrey,
     style: { height: 60 }
   },
-})
+});
 
-export default createAppContainer(TabNavigator);
+const AppStackNavigator = createSwitchNavigator({
+  Login: LoginScreen,
+  Application: TabNavigator
+});
+
+export default createAppContainer(AppStackNavigator);

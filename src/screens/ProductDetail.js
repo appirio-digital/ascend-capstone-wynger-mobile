@@ -100,12 +100,27 @@ class ProductDetail extends React.Component {
         </Header>
         <Content style={styles.content}>
           {/* ----- Product Information Section ------ */}
-          <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Product Name: {item.name || ''}</Text>
-            <Text>Product Code: {item.productcode || ''}</Text>
-            <Text>Product Quantity: {item.quantity__c || ''}</Text>
-            <Text>Industry: {item.industry__c || ''}</Text>
-            <Text>Description: {item.description || ''}</Text>
+          <View style={{ marginTop: 20, padding: 10, width: '100%' }}>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Product Name: </Text>
+              <Text>{item.name || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Product Code: </Text>
+              <Text>{item.productcode || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Product Quantity: </Text>
+              <Text>{item.quantity__c || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Industry: </Text>
+              <Text>{item.industry__c || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Description: </Text>
+              <Text>{item.description || ''}</Text>
+            </View>
           </View>
           {/* Accordions */}
           {this.props.fetchingCases ? (

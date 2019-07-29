@@ -128,13 +128,31 @@ class AccountDetail extends React.Component {
         </Header>
         <Content style={styles.content}>
           {/* ----- Account Information Section ------ */}
-          <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Account Name: {item.name || ''}</Text>
-            <Text>Phone: {item.phone || ''}</Text>
-            <Text>Industry: {item.industries__c || ''}</Text>
-            <Text>Shipping Address: {`${item.shippingstreet || ''} ${item.shippingcity || ''}, ${item.shippingstate || ''} ${item.shippingpostalcode || ''} ${item.shippingcountry || ''}`}</Text>
-            <Text>Website: {item.website || ''}</Text>
-            <Text>Medical Practices: {item.medical_practices_c || ''}</Text>
+          <View style={{ marginTop: 20, padding: 10, width: '100%'}}>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Account Name:</Text>
+              <Text>{item.name || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Phone: </Text>
+              <Text>{item.phone || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Industry: </Text>
+              <Text>{item.industries__c || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Shipping Address: </Text>
+              <Text>{`${item.shippingstreet || ''} ${item.shippingcity || ''}, ${item.shippingstate || ''} ${item.shippingpostalcode || ''} ${item.shippingcountry || ''}`}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Website: </Text>
+              <Text>{item.website || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Medical Practices: </Text>
+              <Text>{item.medical_practices_c || ''}</Text>
+            </View>
           </View>
           {/* Accordions */}
           <Accordion

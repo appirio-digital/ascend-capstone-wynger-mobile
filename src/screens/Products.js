@@ -64,7 +64,7 @@ export default class Products extends React.Component {
   render() {
     return (
       <Container style={styles.content}>
-        <UserHeader/>
+        <UserHeader user={this.props.currentUser} />
         <Content style={styles.content}>
           <View style={styles.searchItem}>
             <Input 

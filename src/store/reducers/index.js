@@ -5,11 +5,13 @@ import app from './app';
 import cases from './cases';
 import contacts from './contacts';
 import products from './products';
+import user from './user';
 
 export default combineReducers({
   accounts,
   app,
   cases,
   contacts,
-  products
+  products,
+  user,
 });

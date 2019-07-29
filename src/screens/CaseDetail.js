@@ -211,17 +211,29 @@ export default class CaseDetail extends React.Component {
             </Button>  
           </Left>
           <Body>
-            <Title style={styles.headerTitle}>Case Detail</Title>
+            <Text style={styles.headerTitle}>Case Detail</Text>
           </Body>
           <Right/>
         </Header>
         <Content style={styles.content}>
           {/* ----- Case Information Section ------ */}
-          <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Case Number: {item.casenumber || ''}</Text>
-            <Text>Case Status: {item.status || ''}</Text>
-            <Text>Industry: {item.industry__c}</Text>
-            <Text>Case Reason: {item.reason}</Text>
+          <View style={{ marginTop: 20, width: '100%', padding: 10 }}>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Case Number:</Text>
+              <Text>{item.casenumber || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Case Status:</Text>
+              <Text>{item.status || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Industry:</Text>
+              <Text>{item.industry__c || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Case Reason:</Text>
+              <Text>{item.reason || ''}</Text>
+            </View>
           </View>
           {/* Accordions */}
           <Accordion

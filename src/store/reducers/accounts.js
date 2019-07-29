@@ -20,12 +20,15 @@ const accountsReducer = (state = initialState, action) =>
     switch(action.type) {
       case ACCOUNTS.FETCHING_ACCOUNTS:
         draft.fetching = action.payload;
+        return;
       case ACCOUNTS.FETCH_ACCOUNTS_SUCCESS:
         draft.data = action.payload;
         draft.fetching = false;
+        return;
       case ACCOUNTS.FETCH_ACCOUNTS_FAILURE:
         draft.fetchError = action.payload
         draft.fetching = false;
+        return;
     }  
   });
 

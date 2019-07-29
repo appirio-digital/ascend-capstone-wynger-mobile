@@ -20,12 +20,15 @@ const contactsReducer = (state = initialState, action) =>
     switch(action.type) {
       case CONTACTS.FETCHING_CONTACTS:
         draft.fetching = action.payload;
+        return;
       case CONTACTS.FETCH_CONTACTS_SUCCESS:
         draft.data = action.payload;
         draft.fetching = false;
+        return;
       case CONTACTS.FETCH_CONTACTS_FAILURE:
         draft.fetchError = action.payload;
         draft.fetching = false;
+        return;
     }  
   });
 

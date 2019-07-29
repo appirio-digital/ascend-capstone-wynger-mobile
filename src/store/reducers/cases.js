@@ -20,12 +20,15 @@ const casesReducer = (state = initialState, action) =>
     switch(action.type) {
       case CASES.FETCHING_CASES:
         draft.fetching = action.payload;
+        return;
       case CASES.FETCH_CASES_SUCCESS:
         draft.data = action.payload;
         draft.fetching = false;
+        return;
       case CASES.FETCH_CASES_FAILURE:
         draft.fetchError = action.payload
         draft.fetching = false;
+        return;
     }  
   });
 

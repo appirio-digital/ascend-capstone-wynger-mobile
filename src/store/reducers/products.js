@@ -20,12 +20,15 @@ const productsReducer = (state = initialState, action) =>
     switch(action.type) {
       case PRODUCTS.FETCHING_PRODUCTS:
         draft.fetching = action.payload;
+        return;
       case PRODUCTS.FETCH_PRODUCTS_SUCCESS:
         draft.data = action.payload;
         draft.fetching = false;
+        return;
       case PRODUCTS.FETCH_PRODUCTS_FAILURE:
         draft.fetchError = action.payload;
         draft.fetching = false;
+        return;
     }  
   });
 

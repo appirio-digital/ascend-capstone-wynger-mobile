@@ -16,9 +16,7 @@ import {
 } from 'native-base';
 
 import Colors from '../constants/Colors';
-import { fakeRelatedLists, fakeCases } from '../utils';
-import CaseList from '../components/CaseList';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { fakeRelatedLists } from '../utils';
 
 const styles = StyleSheet.create({
   header: {
@@ -35,8 +33,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class ProductDetail extends React.Component {
-  
+export default class ContactDetail extends React.Component {
   renderAccordionContent = (accordionContent) => {
     if (accordionContent.title === 'Cases') {
       return (
@@ -84,6 +81,7 @@ export default class ProductDetail extends React.Component {
   }
   
   render() {
+    const { item } = this.props.navigation.state.params;
     return (
       <Container>
         <Header style={styles.header}>
@@ -93,19 +91,29 @@ export default class ProductDetail extends React.Component {
             </Button>  
           </Left>
           <Body>
-            <Title style={styles.headerTitle}>Contact Detail</Title>
+            <Text style={styles.headerTitle}>Contact Detail</Text>
           </Body>
           <Right/>
         </Header>
         <Content style={styles.content}>
-          {/* ----- Account Information Section ------ */}
-          <View style={{ marginTop: 20, backgroundColor: 'lightgrey', width: '90%' }}>
-            <Text>Name: Richard Brainerd</Text>
-            <Text>Account Name: Appirio</Text>
-            <Text>Specialization</Text>
-            <Text>Phone</Text>
-            <Text>email</Text>
-            <Text>Mailing Address</Text>
+          {/* ----- Contact Information Section ------ */}
+          <View style={{ marginTop: 20, padding: 10, width: '100%' }}>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Name: </Text>
+              <Text>{`${item.firstname} ${item.lastname}`}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Phone:</Text>
+              <Text>{item.phone || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Specialization:</Text>
+              <Text>{item.specialization__c || ''}</Text>
+            </View>
+            <View>
+              <Text style={{ fontWeight: 'bold' }}>Email:</Text>
+              <Text>{item.email || ''}</Text>
+            </View>
           </View>
           {/* Accordions */}
           <Accordion

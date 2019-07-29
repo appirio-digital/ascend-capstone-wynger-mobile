@@ -18,6 +18,7 @@ const appReducer = (state = initialState, action) =>
     switch(action.type) {
       case APP.SET_LOADING:
         draft.loading = action.payload;
+        return;
     }  
   });
 

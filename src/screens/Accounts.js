@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, StatusBar } from "react-native"
 import {
   Container,
   Header,
@@ -68,7 +68,7 @@ export default class Accounts extends React.Component {
   render() {
     return (
       <Container>
-        <UserHeader/>
+        <UserHeader user={this.props.currentUser} />
         <Content style={styles.content}>
           <View style={styles.searchItem}>
             <Input 
