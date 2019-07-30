@@ -1,9 +1,10 @@
 import { CASES } from '../actionType';
+import DotEnv from '../../constants/DotEnv';
 
 export const fetchAllCases = () => {
   return (dispatch) => {
     dispatch(setFetching(true));
-    fetch('http://172.16.7.84:3000/cases', { method: 'GET' })
+    fetch(`${DotEnv.API.ENDPOINT}/cases`, { method: 'GET' })
       .then(response => response.json())
       .then(casesData => dispatch(fetchCasesSuccess(casesData)))
       .catch(error => dispatch(fetchCasesFailure(error)));  

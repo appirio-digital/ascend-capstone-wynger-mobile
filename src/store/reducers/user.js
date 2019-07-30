@@ -3,7 +3,7 @@ import produce from 'immer';
 import { USER } from '../actionType';
 
 // initial state
-const initialState = {
+let initialState = {
   authenticationState: false,
   isAuthenticating: false,
   accessToken: '',
@@ -31,6 +31,13 @@ const user = (state = initialState, action) =>
         return;
       case USER.SET_PROFILE_TYPE:
         draft.profileType = action.payload;
+        return;
+      case USER.LOGOUT_SUCCESS:
+        draft.authenticationState = false;
+        draft.isAuthenticating = false;
+        draft.accessToken = '';
+        draft.currentUser = {};
+        draft.profileType = '';
         return;
     }  
   });

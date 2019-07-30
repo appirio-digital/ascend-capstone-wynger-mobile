@@ -1,11 +1,12 @@
 import { USER } from '../actionType';
+import DotEnv from '../../constants/DotEnv';
 
 // Actions
 export const loginUser = (username, passwordPlusToken) => {
   return (dispatch) => {
     dispatch(setIsAuthenticating(true));
     fetch(
-      'http://172.16.7.84:3000/login', 
+      `${DotEnv.API.ENDPOINT}/login`, 
       { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,6 +35,30 @@ export const loginUser = (username, passwordPlusToken) => {
   }
 }
 
+export const logoutUser = () =>
+  (dispatch) => {
+    fetch(
+      `${DotEnv.API.ENDPOINT}/logout`, 
+      { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    )
+    .then(raw => raw.json())
+    .then(res => {
+      if (res.result === 'success') {
+        dispatch(logoutSuccess());
+      } else if (res.result === 'error') {
+        dispatch(logoutFailure());
+      }
+    })
+    .catch(error => {
+      if (error) {
+        console.log('Error logging user out');
+      }
+    });
+  }
+
 // Action Creators
 const setAccessToken = (token) => ({
   type: USER.SET_ACCESS_TOKEN,
@@ -58,4 +83,14 @@ const setCurrentUser = (user) => ({
 const setProfileType = (profileType) => ({
   type: USER.SET_PROFILE_TYPE,
   payload: profileType
+});
+
+const logoutSuccess = () => ({
+  type: USER.LOGOUT_SUCCESS,
+  payload: true
+});
+
+const logoutFailure = () => ({
+  type: USER.LOGOUT_FAILURE,
+  payload: false
 });

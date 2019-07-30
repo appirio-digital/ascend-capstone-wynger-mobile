@@ -1,9 +1,10 @@
 import { ACCOUNTS } from '../actionType';
+import DotEnv from '../../constants/DotEnv';
 
 export const fetchAllAccounts = () => {
   return (dispatch) => {
     dispatch(setFetching(true));
-    fetch('http://172.16.7.84:3000/accounts', { method: 'GET' })
+    fetch(`${DotEnv.API.ENDPOINT}/accounts`, { method: 'GET' })
       .then(response => response.json())
       .then(accountsData => dispatch(fetchAccountsSuccess(accountsData)))
       .catch(error => dispatch(fetchAccountsFailure(error)));

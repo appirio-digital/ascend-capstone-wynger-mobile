@@ -1,9 +1,10 @@
 import { PRODUCTS } from '../actionType';
+import DotEnv from '../../constants/DotEnv';
 
 export const fetchAllProducts = () => {
   return (dispatch) => {
     dispatch(setFetching(true));
-    fetch('http://172.16.7.84:3000/products', { method: 'GET' })
+    fetch(`${DotEnv.API.ENDPOINT}/products`, { method: 'GET' })
       .then(response => response.json())
       .then(productsData => dispatch(fetchProductsSuccess(productsData)))
       .catch(error => dispatch(fetchProductsFailure(error)));

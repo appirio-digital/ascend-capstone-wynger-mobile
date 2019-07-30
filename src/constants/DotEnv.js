@@ -8,5 +8,8 @@ export default {
   ASYNC_STORAGE: {
     CURRENT_USER: 'CURRENT_USER',
     TOKEN: 'access_token'
+  },
+  API: {
+    ENDPOINT: 'https://arcane-eyrie-17308.herokuapp.com'
   }
 };

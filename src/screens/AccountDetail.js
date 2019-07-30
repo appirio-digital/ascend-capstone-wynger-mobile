@@ -110,6 +110,25 @@ class AccountDetail extends React.Component {
       );
      }
   }
+
+  renderSensitiveFields = (item) => {
+    if (this.props.userProfileType === 'SPORTS') {
+      return (
+        <View>
+          <Text style={{ fontWeight: 'bold' }}>Type Of Sport: </Text>
+          <Text>{item.type_of_sport__c || ''}</Text>
+        </View>
+      )
+    } else if (this.props.userProfileType === 'MEDICAL') {
+      return (
+        <View>
+          <Text style={{ fontWeight: 'bold' }}>Medical Practices: </Text>
+          <Text>{item.medical_practices_c || ''}</Text>
+        </View>
+      )
+    }
+    return null;
+  }
   
   render() {
     const { item } = this.props.navigation.state.params;
@@ -149,10 +168,7 @@ class AccountDetail extends React.Component {
               <Text style={{ fontWeight: 'bold' }}>Website: </Text>
               <Text>{item.website || ''}</Text>
             </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Medical Practices: </Text>
-              <Text>{item.medical_practices_c || ''}</Text>
-            </View>
+            {this.renderSensitiveFields(item)}
           </View>
           {/* Accordions */}
           <Accordion
@@ -172,7 +188,8 @@ class AccountDetail extends React.Component {
 
 const mapStateToProps = (state) => ({
   contacts: state.contacts.data,
-  cases: state.cases.data
+  cases: state.cases.data,
+  userProfileType: state.user.profileType
 });
 
 export default connect(mapStateToProps)(AccountDetail);

@@ -6,6 +6,7 @@ import Accounts from './containers/Accounts';
 import Products from './containers/Products';
 
 import LoginScreen from './screens/Login';
+import SettingsScreen from './screens/Settings';
 import AccountDetailsScreen from './screens/AccountDetail';
 import ProductDetailsScreen from './screens/ProductDetail';
 import CaseDetailsScreen from './screens/CaseDetail';
@@ -63,6 +64,7 @@ const ProductStackNavigator = createStackNavigator({
 export const TabNavigator = createBottomTabNavigator({
   Products: ProductStackNavigator,
   Accounts: AccountStackNavigator,
+  Settings: SettingsScreen,
 }, {
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ tintColor }) => {
@@ -71,7 +73,7 @@ export const TabNavigator = createBottomTabNavigator({
 
       if (routeName === 'Products')      iconName = 'ios-pricetags';
       else if (routeName === 'Accounts') iconName = 'ios-people';
-      else if (routeName === 'Barcode')  iconName = 'ios-qr-scanner';
+      else if (routeName === 'Settings')  iconName = 'ios-options';
       else iconName = 'ios-home'
 
       return (
