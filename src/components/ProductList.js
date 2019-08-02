@@ -9,14 +9,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 0,
     paddingLeft: 15,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 4,
-    // },
-    // shadowOpacity: 0.30,
-    // shadowRadius: 4.65,
-    // elevation: 8,
   },
   itemName: {
     fontSize: 18,
@@ -24,10 +16,13 @@ const styles = StyleSheet.create({
   },
   itemIndustry: {
     fontSize: 16,
+  },
+  icon: {
+    color: Colors.wyngerGrey
   }
-})
+});
+
 export default class ProductList extends React.Component {
-  
   keyExtractor = (item) => item.sfid;
 
   renderProduct = ({ item, index }) => (
@@ -39,19 +34,16 @@ export default class ProductList extends React.Component {
         </View>
       </Left>
       <Right>
-        <Button transparent onPress={() => this.props.navigateToDetailsPage(item)}>
-          <Icon type="Ionicons" name="ios-arrow-forward" style={{ color: Colors.wyngerGrey }} />
+        <Button transparent onPress={() => this.props.navigateToDetailsPage('ProductDetails', item)}>
+          <Icon type='Ionicons' name='ios-arrow-forward' style={styles.icon} />
         </Button>
       </Right>
     </ListItem>
   );
-  
+
   render() {
-    if (this.props.fetchingProducts) {
-      return (
-        <Text>Loading...</Text>
-      )
-    }
+    if (this.props.fetchingScreen) return <Text>Loading Products...</Text>;
+
     return (
       <FlatList 
         data={this.props.products}

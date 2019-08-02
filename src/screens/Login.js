@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Keyboard, View, Text } from 'react-native'
+import { StyleSheet, Keyboard, View, Text, Image } from 'react-native'
 import { Item, Input, Label, Button, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 
 import { loginUser } from '../store/actions/user';
-
+import imageLogo from '../../logo.png';
 import Colors from '../constants/Colors';
 
 const styles = StyleSheet.create({
@@ -18,6 +18,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     width: '80%',
+  },
+  logo: {
+    width: '100%',
+    height: 90,
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   profileButtonContainer: {
     width: '100%',
@@ -101,6 +107,7 @@ class Login extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.form}>
+          <Image source={imageLogo} style={styles.logo} />
           <Item floatingLabel style={styles.formItemEmail}>
             <Label style={{ fontWeight: 'bold' }}>Email</Label>
             <Input

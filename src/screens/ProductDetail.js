@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import {
   Container,
@@ -6,19 +7,18 @@ import {
   Content,
   Accordion,
   Header,
-  Title,
   Left,
   Right,
-  Subtitle,
   Button,
   Icon,
-  ListItem
+  ListItem,
 } from 'native-base';
-import { connect } from 'react-redux';
+
+import RecordField from '../components/RecordField';
 
 import Colors from '../constants/Colors';
-import { fakeRelatedLists, fakeCases } from '../utils';
 
+import { fetchProductDetailsScreen } from '../store/actions/products';
 
 const styles = StyleSheet.create({
   header: {
@@ -33,55 +33,70 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: Colors.screenBackground
-  }
+  },
+  accordionHeader: {
+    flexDirection: 'row',
+    padding: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  listItem: { 
+    marginLeft: 0, 
+    paddingLeft: 15 
+  },
 });
 
 class ProductDetail extends React.Component {
-  renderAccordionContent = (accordionContent) => {
-    if (accordionContent.title === 'Cases') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.sfid}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.subject}</Text>
-                    <Text>{item.casenumber}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.priority}</Text>
-                </Right>
-              </ListItem>
-            )
-          }}
-        />
-      );
-    }
+
+  componentDidMount() {
+    const { item } = this.props.navigation.state.params;
+    this.props.dispatch(fetchProductDetailsScreen(item.sfid));
   }
 
-  renderAccordionHeader = (item, expanded) => {
-    if (item.title === 'Cases') {
-      return (
-        <View
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
+  renderAccordion = () => {
+    if (this.props.fetchingDetails) return <Text>Loading Related Lists...</Text>;
+
+    return (
+      <Accordion
+        dataArray={[
+          { title: 'Price Book Entries', content: this.props.pricebookEntries }
+        ]}
+        expanded={true}
+        renderContent={this.renderAccordionContent}
+        renderHeader={this.renderAccordionHeader}
+      />
+    )
   }
+
+  renderAccordionContent = (accordionContent) => (
+    <FlatList
+      data={accordionContent.content}
+      keyExtractor={(item) => item.sfid}
+      renderItem={({ item, index }) => {
+        return (
+          <ListItem key={item.sfid} style={styles.listItem}>
+            <Left>
+              <View>
+                <Text>{index + 1}. {item.name}</Text>
+              </View>
+            </Left>
+            <Right>
+              <Text>${item.unitprice}</Text>
+            </Right>
+          </ListItem>
+        )
+      }}
+    />
+  );
+
+  renderAccordionHeader = (item, expanded) => (
+    <View style={styles.accordionHeader}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{' '}{item.title}</Text>
+      {expanded
+        ? <Icon style={{ fontSize: 20 }} name='remove-circle' />
+        : <Icon style={{ fontSize: 20 }} name='add-circle' />}
+    </View>
+  );
 
   render() {
     const { item } = this.props.navigation.state.params;
@@ -90,7 +105,7 @@ class ProductDetail extends React.Component {
         <Header style={styles.header}>
           <Left>
             <Button transparent onPress={() => this.props.navigation.pop()}>
-              <Icon name="arrow-back" style={{ color: 'white' }} />
+              <Icon name='arrow-back' style={{ color: 'white' }} />
             </Button>
           </Left>
           <Body>
@@ -101,40 +116,14 @@ class ProductDetail extends React.Component {
         <Content style={styles.content}>
           {/* ----- Product Information Section ------ */}
           <View style={{ marginTop: 20, padding: 10, width: '100%' }}>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Product Name: </Text>
-              <Text>{item.name || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Product Code: </Text>
-              <Text>{item.productcode || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Product Quantity: </Text>
-              <Text>{item.quantity__c || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Industry: </Text>
-              <Text>{item.industry__c || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Description: </Text>
-              <Text>{item.description || ''}</Text>
-            </View>
+            <RecordField label='Product Name' value={item.name || ''} />
+            <RecordField label='Product Code' value={item.productcode || ''} />
+            <RecordField label='Product Quantity' value={item.quantity__c || ''} />
+            <RecordField label='Industry' value={item.industry__c || ''} />
+            <RecordField label='Description' value={item.description || ''} />
           </View>
           {/* Accordions */}
-          {this.props.fetchingCases ? (
-            <Text>Loading...</Text>
-          ) : (
-              <Accordion
-                dataArray={[
-                  { title: 'Cases', content: this.props.cases }
-                ]}
-                expanded={true}
-                renderContent={this.renderAccordionContent}
-                renderHeader={this.renderAccordionHeader}
-              />
-            )}
+          {this.renderAccordion()}
         </Content>
       </Container>
     );
@@ -142,8 +131,13 @@ class ProductDetail extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  cases: state.cases.data,
-  fetchingCases: state.cases.fetching
+  userProfileType: state.user.profileType,
+  listViews: state.products.listViews,
+  fetchingDetails: state.products.fetchingDetails,
+  fetchingDetailsError: state.products.fetchingDetailsError,
+  productId: state.products.productId,
+  fields: state.products.fields,
+  pricebookEntries: state.products.pricebookEntries,
 });
 
 export default connect(mapStateToProps)(ProductDetail);

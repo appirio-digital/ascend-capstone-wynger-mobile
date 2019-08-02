@@ -1,27 +1,48 @@
 import { PRODUCTS } from '../actionType';
 import DotEnv from '../../constants/DotEnv';
 
-export const fetchAllProducts = () => {
-  return (dispatch) => {
-    dispatch(setFetching(true));
-    fetch(`${DotEnv.API.ENDPOINT}/products`, { method: 'GET' })
-      .then(response => response.json())
-      .then(productsData => dispatch(fetchProductsSuccess(productsData)))
-      .catch(error => dispatch(fetchProductsFailure(error)));
-  }
+export const fetchProductsScreen = () => (dispatch) => {
+  dispatch(setFetchingProductsScreen(true));
+  fetch(`${DotEnv.API.ENDPOINT}/products_screen`, { method: 'GET' })
+    .then(res => res.json())
+    .then(json => dispatch(fetchProductsScreenSuccess(json)))
+    .catch(error => dispatch(fetchProductsScreenFailure(error)));
 }
 
-const setFetching = (value) => ({
-  type: PRODUCTS.FETCHING_PRODUCTS,
-  payload: true
+const setFetchingProductsScreen = (value) => ({
+  type: PRODUCTS.FETCHING_PRODUCTS_SCREEN,
+  payload: value
 });
 
-const fetchProductsSuccess = (productsData) => ({
-  type: PRODUCTS.FETCH_PRODUCTS_SUCCESS,
-  payload: productsData.data
+const fetchProductsScreenSuccess = (productsData) => ({
+  type: PRODUCTS.FETCH_PRODUCTS_SCREEN_SUCCESS,
+  payload: productsData.data,
 });
 
-const fetchProductsFailure = (error) => ({
-  type: PRODUCTS.FETCH_PRODUCTS_FAILURE,
+const fetchProductsScreenFailure = (error) => ({
+  type: PRODUCTS.FETCH_PRODUCTS_SCREEN_FAILURE,
   payload: error
+});
+
+export const fetchProductDetailsScreen = (productId) => (dispatch) => {
+  dispatch(setFetchingProductDetails(true));
+  fetch(`${DotEnv.API.ENDPOINT}/product_details_screen/${productId}`, { method: 'GET' })
+    .then(res => res.json())
+    .then(json => dispatch(fetchProductDetailsSuccess(json)))
+    .then(error => dispatch(fetchProductDetailsFailure(error)));
+}
+
+const setFetchingProductDetails = (value) => ({
+  type: PRODUCTS.FETCHING_PRODUCT_DETAILS,
+  payload: value,
+});
+
+const fetchProductDetailsSuccess = (productDetails) => ({
+  type: PRODUCTS.FETCH_PRODUCT_DETAILS_SUCCESS,
+  payload: productDetails.data,
+});
+
+const fetchProductDetailsFailure = (error) => ({
+  type: PRODUCTS.FETCH_PRODUCT_DETAILS_FAILURE,
+  payload: error,
 });

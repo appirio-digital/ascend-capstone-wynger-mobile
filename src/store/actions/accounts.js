@@ -1,27 +1,48 @@
 import { ACCOUNTS } from '../actionType';
 import DotEnv from '../../constants/DotEnv';
 
-export const fetchAllAccounts = () => {
-  return (dispatch) => {
-    dispatch(setFetching(true));
-    fetch(`${DotEnv.API.ENDPOINT}/accounts`, { method: 'GET' })
-      .then(response => response.json())
-      .then(accountsData => dispatch(fetchAccountsSuccess(accountsData)))
-      .catch(error => dispatch(fetchAccountsFailure(error)));
-  }
+export const fetchAccountsScreen = () => (dispatch) => {
+  dispatch(setFetchingAccountsScreen(true));
+  fetch(`${DotEnv.API.ENDPOINT}/accounts_screen`, { method: 'GET' })
+    .then(res => res.json())
+    .then(json => dispatch(fetchAccountsSuccess(json)))
+    .catch(error => dispatch(fetchAccountsFailure(error)));
 }
 
-const setFetching = (value) => ({
-  type: ACCOUNTS.FETCHING_ACCOUNTS,
+const setFetchingAccountsScreen = (value) => ({
+  type: ACCOUNTS.FETCHING_ACCOUNTS_SCREEN,
   payload: value
 });
 
 const fetchAccountsSuccess = (accountsData) => ({
-  type: ACCOUNTS.FETCH_ACCOUNTS_SUCCESS,
+  type: ACCOUNTS.FETCH_ACCOUNTS_SCREEN_SUCCESS,
   payload: accountsData.data,
 });
 
 const fetchAccountsFailure = (error) => ({
-  type: ACCOUNTS.FETCH_ACCOUNTS_FAILURE,
+  type: ACCOUNTS.FETCH_ACCOUNTS_SCREEN_FAILURE,
+  payload: error
+});
+
+export const fetchAccountDetailsScreen = (accountId) => (dispatch) => {
+  dispatch(setFetchingAccountDetails(true));
+  fetch(`${DotEnv.API.ENDPOINT}/account_details_screen/${accountId}`, { method: 'GET' })
+    .then(res => res.json())
+    .then(json => dispatch(fetchAccountDetailsSuccess(json)))
+    .catch(error => dispatch(fetchAccountDetailsFailure(error)));
+}
+
+const setFetchingAccountDetails = (value) => ({
+  type: ACCOUNTS.FETCHING_ACCOUNT_DETAILS,
+  payload: value,
+});
+
+const fetchAccountDetailsSuccess = (accountDetailsData) => ({
+  type: ACCOUNTS.FETCH_ACCOUNT_DETAILS_SUCCESS,
+  payload: accountDetailsData.data,
+});
+
+const fetchAccountDetailsFailure = (error) => ({
+  type: ACCOUNTS.FETCH_ACCOUNT_DETAILS_FAILURE,
   payload: error
 });

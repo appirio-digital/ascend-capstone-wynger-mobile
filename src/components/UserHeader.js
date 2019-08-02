@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from "react-native"
-import { Header, Title, Subtitle, Thumbnail, Icon } from "native-base";
+import { Header, Title, Subtitle, Icon } from "native-base";
 import { connect } from 'react-redux';
 
-import { fakeUser } from "../utils";
 import Colors from '../constants/Colors';
 
 const styles = StyleSheet.create({
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class UserHeader extends React.Component {
+class UserHeader extends React.Component {
   render() {
     const { user } = this.props;
     return (
@@ -41,7 +40,7 @@ export default class UserHeader extends React.Component {
             <Subtitle style={{ color: 'white' }}>{user.title || ''}</Subtitle>
           </View>
           <View style={styles.headerUserAvatarWrapper}>
-            <Icon 
+            <Icon
               style={styles.headerUserAvatar} 
               type='Ionicons' 
               name='ios-person'
@@ -52,3 +51,9 @@ export default class UserHeader extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  user: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(UserHeader);

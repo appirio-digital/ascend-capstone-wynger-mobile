@@ -114,12 +114,6 @@ export const fakePriceBooks = [
 ];
 
 export const fakeRelatedLists = [
-  { title: 'Contacts', content: fakeContacts },
-  { title: 'Cases', content: fakeCases },
-  { title: 'Opportunities', content: fakeOps },
-  { title: 'Price Books',content: fakePriceBooks},
   { title: 'Case History', content: fakeContacts },
   { title: 'Case Comments', content: fakeContacts },
-  { title: 'Solutions', content: fakeContacts },
-  { title: 'Notes & Attachments', content: fakeNotesAttachments },
 ]

@@ -1,5 +1,6 @@
-import React from "react";
-import { StyleSheet, View } from "react-native"
+import React from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet, View, Text } from 'react-native';
 import { 
   Container, 
   Header, 
@@ -12,16 +13,14 @@ import {
   Left,
   Right,
   Button,
-} from "native-base";
+} from 'native-base';
+
+import Colors from '../constants/Colors';
 
 import ProductList from '../components/ProductList';
-import Colors from '../constants/Colors';
-import { fakeProductListViews } from "../utils";
-
 import UserHeader from '../components/UserHeader';
 
-import { fetchAllProducts } from '../store/actions/products';
-import { fetchAllCases } from '../store/actions/cases';
+import { fetchProductsScreen } from '../store/actions/products';
 
 const styles = StyleSheet.create({
   content: {
@@ -43,70 +42,82 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class Products extends React.Component {
+class Products extends React.Component {
   state = {
-    selectedProduct: fakeProductListViews[0].value
+    selectedProduct: null
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchAllProducts());
-    this.props.dispatch(fetchAllCases());
+    this.props.dispatch(fetchProductsScreen());
   }
 
-  onSelectedProductValueChange = (value) => {
-    this.setState({ selectedProduct: value });
-  }
+  onSelectedProductValueChange = (value) => this.setState({ selectedProduct: value });
 
-  navigateToDetailsPage = (item) => {
-    this.props.navigation.push('ProductDetails', { item });
+  navigateToDetailsPage = (path, item) => this.props.navigation.push(path, { item });
+
+  renderListViews = () => {
+    if (this.props.fetchingScreen) return <Text>Loading List Views...</Text>;
+
+    if (!!this.props.listViews && this.props.listViews.constructor === Object) {
+      return (
+        <Picker.Item 
+          key={'thelistview'}
+          label={this.props.listViews.label}
+          value={this.props.listViews.fullName}
+        />  
+      )
+    }
+
+    if (!!this.props.listViews && this.props.listViews.constructor === Array) {
+      return this.props.listViews.map((listView, index) => (
+        <Picker.Item 
+          key={index}
+          label={listView.label}
+          value={listView.fullName}
+        />
+      ));
+    }
   }
   
   render() {
     return (
       <Container style={styles.content}>
-        <UserHeader user={this.props.currentUser} />
+        <UserHeader />
         <Content style={styles.content}>
           <View style={styles.searchItem}>
             <Input 
               style={styles.searchInput}
-              placeholder="Search Products Here..." 
+              placeholder='Search Products Here...'
             />
           </View>
           <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="arrow-down" />}
+            mode='dropdown'
+            iosIcon={<Icon name='arrow-down' />}
             style={styles.picker}
             textStyle={{ fontWeight: 'bold' }}
             itemTextStyle={{ fontWeight: 'bold' }}
+            placeholder='Select A List View'
             selectedValue={this.state.selectedProduct}
             onValueChange={this.onSelectedProductValueChange}
             renderHeader={(backAction) => (
               <Header>
                 <Left>
                   <Button transparent onPress={backAction}>
-                    <Icon name="arrow-back" />
+                    <Icon name='arrow-back' />
                   </Button>
                 </Left>
                 <Body style={{ flex: 3 }}>
-                  <Title>Choose A Listview</Title>
+                  <Title>Select A Listview</Title>
                 </Body>
                 <Right />
               </Header>
             )}
           >
-          {fakeProductListViews.map((list, index) => {
-            return (
-              <Picker.Item 
-                key={index}
-                label={list.label} 
-                value={list.value}
-              />
-            )
-          })}
+          {this.renderListViews()}
           </Picker>
           <ProductList 
-            fetchingProducts={this.props.fetchingProducts}
-            products={this.props.products}            
+            fetchingScreen={this.props.fetchingScreen}
+            products={this.props.records}
             navigateToDetailsPage={this.navigateToDetailsPage}
           />
         </Content>
@@ -114,3 +125,18 @@ export default class Products extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  records: state.products.records,
+  listViews: state.products.listViews,
+  label: state.products.label,
+  fetchingScreen: state.products.fetchingScreen,
+  fetchScreenError: state.products.fetchScreenError,
+  fetchingDetails: state.products.fetchingDetails,
+  fetchingDetailsError: state.products.fetchingDetailsError,
+  productId: state.products.productId,
+  fields: state.products.fields,
+  pricebookEntries: state.products.pricebookEntries
+});
+
+export default connect(mapStateToProps)(Products);

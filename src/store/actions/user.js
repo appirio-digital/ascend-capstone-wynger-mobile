@@ -28,15 +28,14 @@ export const loginUser = (username, passwordPlusToken) => {
       dispatch(setIsAuthenticating(false));
     })
     .catch(error => {
-      console.error('Error user login: ', error);
+      console.error(error);
       dispatch(setAuthState(false));
       dispatch(setIsAuthenticating(false));
     });
   }
 }
 
-export const logoutUser = () =>
-  (dispatch) => {
+export const logoutUser = () => (dispatch) => {
     fetch(
       `${DotEnv.API.ENDPOINT}/logout`, 
       { 
@@ -44,18 +43,16 @@ export const logoutUser = () =>
         headers: { 'Content-Type': 'application/json' },
       }
     )
-    .then(raw => raw.json())
-    .then(res => {
-      if (res.result === 'success') {
+    .then(res => res.json())
+    .then(json => {
+      if (json.result === 'success') {
         dispatch(logoutSuccess());
-      } else if (res.result === 'error') {
+      } else if (json.result === 'error') {
         dispatch(logoutFailure());
       }
     })
     .catch(error => {
-      if (error) {
-        console.log('Error logging user out');
-      }
+      dispatch(logoutFailure());
     });
   }
 

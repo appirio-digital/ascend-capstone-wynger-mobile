@@ -2,8 +2,8 @@ import React from 'react';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Icon } from 'native-base'
 
-import Accounts from './containers/Accounts';
-import Products from './containers/Products';
+import Accounts from './screens/Accounts';
+import Products from './screens/Products';
 
 import LoginScreen from './screens/Login';
 import SettingsScreen from './screens/Settings';
@@ -62,8 +62,8 @@ const ProductStackNavigator = createStackNavigator({
 });
 
 export const TabNavigator = createBottomTabNavigator({
-  Products: ProductStackNavigator,
   Accounts: AccountStackNavigator,
+  Products: ProductStackNavigator,
   Settings: SettingsScreen,
 }, {
   defaultNavigationOptions: ({ navigation }) => ({

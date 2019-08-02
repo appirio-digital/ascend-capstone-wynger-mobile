@@ -15,7 +15,10 @@ import {
   ListItem
 } from 'native-base';
 
+import RecordField from '../components/RecordField';
+
 import Colors from '../constants/Colors';
+import DotEnv from '../constants/DotEnv';
 import { fakeRelatedLists } from '../utils';
 
 const styles = StyleSheet.create({
@@ -23,32 +26,65 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.wyngerRed,
   },
   headerTitle: {
-    color: 'white'
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   headerSubtitle: {
     color: 'white'
   },
   content: {
     backgroundColor: Colors.screenBackground
-  }
+  },
+  accordionHeader: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-between",
+    alignItems: "center" ,
+  },
+  listItem: { 
+    marginLeft: 0, 
+    paddingLeft: 15 
+  },
 });
 
 export default class CaseDetail extends React.Component {
+  state = {
+    fetchingDetails: false,
+    relatedLists: []
+  };
+
+  componentDidMount = async () => {
+    this.setState({ fetchingDetails: true });
+    try {
+      const caseId = this.props.navigation.state.params.item.sfid;
+      const res = await fetch(`${DotEnv.API.ENDPOINT}/case_details_screen/${caseId}`);
+      const json = await res.json();
+      let newState = [
+        { title: 'Case History', content: json.data.caseHistory },
+        { title: 'Case Comments', content: json.data.caseComments }
+      ];
+      this.setState({ 
+        relatedLists: newState,
+        fetchingDetails: false
+      });
+    } catch (error) {
+      console.error(error);
+      this.setState({ fetchingDetails: false });
+    }
+  }
   
   renderAccordionContent = (accordionContent) => {
-
     if (accordionContent.title === 'Case History') {
       return (
         <FlatList
           data={accordionContent.content}
           keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Text>{index + 1}. {item.name}</Text>
-              </ListItem>
-            )
-          }}
+          renderItem={({ item, index }) => (
+            <ListItem key={item.id} style={styles.listItem}>
+              <Text>{index + 1}. {item.name}</Text>
+            </ListItem>
+          )}
         />
       );
     }
@@ -58,147 +94,32 @@ export default class CaseDetail extends React.Component {
         <FlatList
           data={accordionContent.content}
           keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.name}</Text>
-                    <Text>{item.account}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.contact}</Text>
-                </Right>
-              </ListItem>
-            )
-          }}
-        />
-      );
-    }
-
-    if (accordionContent.title === 'Solutions') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.name}</Text>
-                    <Text>{item.account}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.contact}</Text>
-                </Right>
-              </ListItem>
-            )
-          }}
-        />
-      );
-    }
-
-    if (accordionContent.title === 'Notes & Attachments') {
-      return (
-        <FlatList
-          data={accordionContent.content}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.id} style={{ marginLeft: 0, paddingLeft: 15 }}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.name}</Text>
-                    <Text>{item.account}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.contact}</Text>
-                </Right>
-              </ListItem>
-            )
-          }}
+          renderItem={({ item, index }) => (
+            <ListItem key={item.id} style={styles.listItem}>
+              <Left>
+                <View>
+                  <Text>{index + 1}. {item.name}</Text>
+                  <Text>{item.account}</Text>
+                </View>
+              </Left>
+              <Right>
+                <Text>{item.contact}</Text>
+              </Right>
+            </ListItem>
+          )}
         />
       );
     }
   }
 
-  renderAccordionHeader = (item, expanded) => {
-    if(item.title === 'Case History') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-
-    if(item.title === 'Case Comments') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-
-    if(item.title === 'Solutions') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-
-    if(item.title === 'Notes & Attachments') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-    }
-  }
+  renderAccordionHeader = (item, expanded) => (
+    <View style={styles.accordionHeader}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{' '}{item.title}</Text>
+      {expanded
+        ? <Icon style={{ fontSize: 20 }} name='remove-circle' />
+        : <Icon style={{ fontSize: 20 }} name='add-circle' />}
+    </View>
+  );
   
   render() {
     const { item } = this.props.navigation.state.params;
@@ -218,30 +139,24 @@ export default class CaseDetail extends React.Component {
         <Content style={styles.content}>
           {/* ----- Case Information Section ------ */}
           <View style={{ marginTop: 20, width: '100%', padding: 10 }}>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Case Number:</Text>
-              <Text>{item.casenumber || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Case Status:</Text>
-              <Text>{item.status || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Industry:</Text>
-              <Text>{item.industry__c || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Case Reason:</Text>
-              <Text>{item.reason || ''}</Text>
-            </View>
+            <RecordField label='Case Subject' value={item.subject || ''} />
+            <RecordField label='Case Priority' value={item.priority || ''} />
+            <RecordField label='Case Number' value={item.casenumber || ''} />
+            <RecordField label='Case Status' value={item.status || ''} />
+            <RecordField label='Case Industry' value={item.industry__c || ''} />
+            <RecordField label='Case Reason' value={item.reason || ''} /> 
           </View>
           {/* Accordions */}
-          <Accordion
-            dataArray={fakeRelatedLists}
-            expanded={true}
-            renderContent={this.renderAccordionContent}
-            renderHeader={this.renderAccordionHeader}
-          />
+          {
+            this.state.fetchingDetails ? <Text>Loading...</Text>
+            :
+            <Accordion
+              dataArray={this.state.relatedLists}
+              expanded={true}
+              renderContent={this.renderAccordionContent}
+              renderHeader={this.renderAccordionHeader}
+            />
+          }
         </Content>
       </Container>
     );

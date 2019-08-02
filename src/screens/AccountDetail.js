@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { 
   Container,
@@ -12,39 +13,74 @@ import {
   Icon,
   ListItem
 } from 'native-base';
-import { connect } from 'react-redux'
+
+import RecordField from '../components/RecordField';
 
 import Colors from '../constants/Colors';
+
+import { fetchAccountDetailsScreen } from '../store/actions/accounts';
 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.wyngerRed,
   },
   headerTitle: {
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold'
   },
   headerSubtitle: {
     color: 'white'
   },
   content: {
     backgroundColor: Colors.screenBackground
-  }
+  },
+  accordionHeader: {
+    flexDirection: 'row',
+    padding: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  listItem: { 
+    marginLeft: 0, 
+    paddingLeft: 15 
+  },
 });
 
 class AccountDetail extends React.Component {
+
+  componentDidMount() {
+    const { item } = this.props.navigation.state.params;
+    this.props.dispatch(fetchAccountDetailsScreen(item.sfid));
+  }
+
+  renderAccordion = () => {
+    if (this.props.fetchingDetails) {
+      return <Text>Loading...</Text>;
+    }
+    return (
+      <Accordion
+        dataArray={[
+          {title: 'Cases', content: this.props.cases},
+          {title: 'Contacts', content: this.props.contacts}
+        ]} 
+        expanded={true}
+        renderContent={this.renderAccordionContent}
+        renderHeader={this.renderAccordionHeader}
+      />
+    )
+  }
+
   renderAccordionContent = (accordionContent) => {
     if (accordionContent.title === 'Contacts') {
       return (
         <FlatList
           data={accordionContent.content}
           keyExtractor={(item) => item.sfid}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('ContactDetails', { item })}>
-                <Text>{`${index + 1}. ${item.name || ''}`}</Text>
-              </ListItem>
-            )
-          }}
+          renderItem={({ item, index }) => (
+            <ListItem key={item.sfid} style={styles.listItem} onPress={() => this.props.navigation.push('ContactDetails', { item })}>
+              <Text>{`${index + 1}. ${item.name || ''}`}</Text>
+            </ListItem>
+          )}
         />
       );
     }
@@ -54,78 +90,42 @@ class AccountDetail extends React.Component {
         <FlatList
           data={accordionContent.content}
           keyExtractor={(item) => item.sfid}
-          renderItem={({ item, index }) => {
-            return (
-              <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
-                <Left>
-                  <View>
-                    <Text>{index + 1}. {item.subject}</Text>
-                    <Text>{item.casenumber}</Text>
-                  </View>
-                </Left>
-                <Right>
-                  <Text>{item.priority}</Text>
-                </Right>
-              </ListItem>
-            )
-          }}
+          renderItem={({ item, index }) => (
+            <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
+              <Left>
+                <View>
+                  <Text>{index + 1}. {item.subject}</Text>
+                  <Text>{item.casenumber}</Text>
+                </View>
+              </Left>
+              <Right>
+                <Text>{item.priority}</Text>
+              </Right>
+            </ListItem>
+          )}
         />
       );
     }
   }
 
-  renderAccordionHeader = (item, expanded) => {
-    if(item.title === 'Contacts') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-     }
-     if(item.title === 'Cases') {
-      return (
-        <View 
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center" ,
-          }}
-        >
-          <Text style={{ fontWeight: "600" }}>{" "}{item.title}</Text>
-          {expanded
-            ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-            : <Icon style={{ fontSize: 18 }} name="add-circle" />}
-        </View>
-      );
-     }
-  }
+  renderAccordionHeader = (item, expanded) => (
+    <View style={styles.accordionHeader}>
+      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{' '}{item.title}</Text>
+      {expanded
+        ? <Icon style={{ fontSize: 20 }} name='remove-circle' />
+        : <Icon style={{ fontSize: 20 }} name='add-circle' />}
+    </View>
+  );
 
   renderSensitiveFields = (item) => {
     if (this.props.userProfileType === 'SPORTS') {
-      return (
-        <View>
-          <Text style={{ fontWeight: 'bold' }}>Type Of Sport: </Text>
-          <Text>{item.type_of_sport__c || ''}</Text>
-        </View>
-      )
+      let typeOfSport = '';
+      if (item.type_of_sport__c !== null && item.type_of_sport__c !== '') {
+        typeOfSport = item.type_of_sport__c.split(';').join(' | ');
+      }
+      return <RecordField label='Type Of Sport' value={typeOfSport} />;
     } else if (this.props.userProfileType === 'MEDICAL') {
-      return (
-        <View>
-          <Text style={{ fontWeight: 'bold' }}>Medical Practices: </Text>
-          <Text>{item.medical_practices_c || ''}</Text>
-        </View>
-      )
+      return <RecordField label='Medical Practices' value={item.medical_practices_c || ''} />;
     }
     return null;
   }
@@ -148,38 +148,15 @@ class AccountDetail extends React.Component {
         <Content style={styles.content}>
           {/* ----- Account Information Section ------ */}
           <View style={{ marginTop: 20, padding: 10, width: '100%'}}>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Account Name:</Text>
-              <Text>{item.name || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Phone: </Text>
-              <Text>{item.phone || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Industry: </Text>
-              <Text>{item.industries__c || ''}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Shipping Address: </Text>
-              <Text>{`${item.shippingstreet || ''} ${item.shippingcity || ''}, ${item.shippingstate || ''} ${item.shippingpostalcode || ''} ${item.shippingcountry || ''}`}</Text>
-            </View>
-            <View>
-              <Text style={{ fontWeight: 'bold' }}>Website: </Text>
-              <Text>{item.website || ''}</Text>
-            </View>
+            <RecordField label='Account Name' value={item.name || ''} />
+            <RecordField label='Phone' value={item.phone || ''} />
+            <RecordField label='Industry' value={item.industries__c || ''} />
+            <RecordField label='Shipping Address' value={`${item.shippingstreet || ''} ${item.shippingcity || ''}, ${item.shippingstate || ''} ${item.shippingpostalcode || ''} ${item.shippingcountry || ''}`} />
+            <RecordField label='Website' value={item.website || ''} />
             {this.renderSensitiveFields(item)}
           </View>
           {/* Accordions */}
-          <Accordion
-            dataArray={[
-              {title: 'Cases', content: this.props.cases},
-              {title: 'Contacts', content: this.props.contacts}
-            ]} 
-            expanded={true}
-            renderContent={this.renderAccordionContent}
-            renderHeader={this.renderAccordionHeader}
-          />
+          {this.renderAccordion()}
         </Content>
       </Container>
     );
@@ -187,9 +164,15 @@ class AccountDetail extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  contacts: state.contacts.data,
-  cases: state.cases.data,
-  userProfileType: state.user.profileType
+  userProfileType: state.user.profileType,
+  listViews: state.accounts.listViews,
+  fetchingDetails: state.accounts.fetchingDetails,
+  fetchingDetailsError: state.accounts.fetchingDetailsError,
+  accountId: state.accounts.accountId,
+  fields: state.accounts.fields,
+  cases: state.accounts.accountCases,
+  contacts: state.accounts.accountContacts,
+  ops: state.accounts.accountOps
 });
 
 export default connect(mapStateToProps)(AccountDetail);

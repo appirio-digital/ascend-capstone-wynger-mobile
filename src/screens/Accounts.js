@@ -1,5 +1,6 @@
-import React from "react";
-import { StyleSheet, View, StatusBar } from "react-native"
+import React from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet, View, Text } from 'react-native';
 import {
   Container,
   Header,
@@ -12,17 +13,14 @@ import {
   Picker,
   Input,
   Icon
-} from "native-base";
+} from 'native-base';
+
+import Colors from '../constants/Colors';
 
 import AccountList from '../components/AccountList'
 import UserHeader from '../components/UserHeader'
 
-import Colors from '../constants/Colors';
-import { fakeAccountListViews } from "../utils";
-
-import { fetchAllAccounts } from '../store/actions/accounts';
-import { fetchAllContacts } from '../store/actions/contacts';
-import { fetchAllCases } from '../store/actions/cases';
+import { fetchAccountsScreen } from '../store/actions/accounts';
 
 
 const styles = StyleSheet.create({
@@ -45,72 +43,71 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class Accounts extends React.Component {
+class Accounts extends React.Component {
 
   state = {
-    selectedAccount: fakeAccountListViews[0].value
+    selectedAccount: null
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchAllAccounts());
-    this.props.dispatch(fetchAllContacts());
-    this.props.dispatch(fetchAllCases());
+    this.props.dispatch(fetchAccountsScreen());
   }
 
-  onSelectedAccountValueChange = (value) => {
-    this.setState({ selectedAccount: value });
-  }
+  onSelectedAccountValueChange = (selectedAccount) => this.setState({ selectedAccount });
 
-  navigateToDetailsPage = (item) => {
-    this.props.navigation.push('AccountDetails', { item });
+  navigateToDetailsPage = (path, item) => this.props.navigation.push(path, { item });
+
+  renderListViews = () => {
+    if (this.props.fetchingScreen) return <Text>Loading List Views...</Text>;
+    
+    return this.props.listViews.map((listView, index) => (
+      <Picker.Item 
+        key={index}
+        label={listView.label} 
+        value={listView.fullName}
+      />
+    ));
   }
 
   render() {
     return (
       <Container>
-        <UserHeader user={this.props.currentUser} />
+        <UserHeader />
         <Content style={styles.content}>
           <View style={styles.searchItem}>
             <Input 
               style={styles.searchInput}
-              placeholder="Search Accounts Here..." 
+              placeholder='Search Accounts Here...'
             />
           </View>
           <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="arrow-down" />}
+            mode='dropdown'
+            iosIcon={<Icon name='arrow-down' />}
             style={styles.picker}
             textStyle={{ fontWeight: 'bold' }}
             itemTextStyle={{ fontWeight: 'bold' }}
+            placeholder='Select A Listview'
             selectedValue={this.state.selectedAccount}
             onValueChange={this.onSelectedAccountValueChange}
             renderHeader={(backAction) => (
               <Header>
                 <Left>
                   <Button transparent onPress={backAction}>
-                    <Icon name="arrow-back" />
+                    <Icon name='arrow-back' />
                   </Button>
                 </Left>
                 <Body style={{ flex: 3 }}>
-                  <Title>Choose A Listview</Title>
+                  <Title>Select A Listview</Title>
                 </Body>
                 <Right />
               </Header>
             )}
           >
-          {fakeAccountListViews.map((account, index) => {
-            return (
-              <Picker.Item 
-                key={index}
-                label={account.label} 
-                value={account.value}
-              />
-            )
-          })}
+            {this.renderListViews()}
           </Picker>
           <AccountList 
-            fetchingAccounts={this.props.fetchAllAccounts}
-            accounts={this.props.accounts} 
+            fetchingAccounts={this.props.fetchingScreen}
+            accounts={this.props.records} 
             navigateToDetailsPage={this.navigateToDetailsPage} 
           />
         </Content>
@@ -118,3 +115,20 @@ export default class Accounts extends React.Component {
     );
   }
 };
+
+const mapStateToProps = (state) => ({
+  records: state.accounts.records,
+  listViews: state.accounts.listViews,
+  label: state.accounts.label,
+  fetchingScreen: state.accounts.fetchingScreen,
+  fetchScreenError: state.accounts.fetchScreenError,
+  fetchingDetails: state.accounts.fetchingDetails,
+  fetchingDetailsError: state.accounts.fetchingDetailsError,
+  accountId: state.accounts.accountId,
+  fields: state.accounts.fields,
+  accountCases: state.accounts.accountCases,
+  accountContacts: state.accounts.accountContacts,
+  accountOps: state.accounts.accountOps
+});
+
+export default connect(mapStateToProps)(Accounts);

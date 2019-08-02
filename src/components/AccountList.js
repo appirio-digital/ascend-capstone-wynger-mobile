@@ -9,14 +9,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 0,
     paddingLeft: 15,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 4,
-    // },
-    // shadowOpacity: 0.30,
-    // shadowRadius: 4.65,
-    // elevation: 8,
   },
   itemName: {
     fontSize: 18,
@@ -25,12 +17,12 @@ const styles = StyleSheet.create({
   itemIndustry: {
     fontSize: 16,
   }
-})
-export default class AccountList extends React.Component {
-  
-  keyExtractor = (item) => item.sfid;
+});
 
-  renderAccount = ({ item, index }) => (
+function AccountList(props) {
+  const keyExtractor = (item) => item.sfid;
+  
+  const renderAccount = ({ item, index }) => (
     <ListItem style={styles.item}>
       <Left>
         <View>
@@ -39,25 +31,22 @@ export default class AccountList extends React.Component {
         </View>
       </Left>
       <Right>
-        <Button transparent onPress={() => this.props.navigateToDetailsPage(item)}>
+        <Button transparent onPress={() => props.navigateToDetailsPage('AccountDetails', item)}>
           <Icon type="Ionicons" name="ios-arrow-forward" style={{ color: Colors.wyngerGrey }} />
         </Button>
       </Right>
     </ListItem>
   );
-  
-  render() {
-    if (this.props.fetchingAccounts) {
-      return (
-        <Text>Loading...</Text>
-      )
-    }
-    return (
-      <FlatList 
-        data={this.props.accounts}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderAccount}
-      />
-    );
-  }
+
+  if (props.fetchingAccounts) return <Text>Loading Accounts...</Text>;
+
+  return (
+    <FlatList 
+      data={props.accounts}
+      keyExtractor={keyExtractor}
+      renderItem={renderAccount}
+    />
+  );
 }
+
+export default AccountList
