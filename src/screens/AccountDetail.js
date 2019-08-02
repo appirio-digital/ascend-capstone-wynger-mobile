@@ -61,7 +61,8 @@ class AccountDetail extends React.Component {
       <Accordion
         dataArray={[
           {title: 'Cases', content: this.props.cases},
-          {title: 'Contacts', content: this.props.contacts}
+          {title: 'Contacts', content: this.props.contacts},
+          {title: 'Opportunities', content: this.props.ops}
         ]} 
         expanded={true}
         renderContent={this.renderAccordionContent}
@@ -91,7 +92,7 @@ class AccountDetail extends React.Component {
           data={accordionContent.content}
           keyExtractor={(item) => item.sfid}
           renderItem={({ item, index }) => (
-            <ListItem key={item.sfid} style={{ marginLeft: 0, paddingLeft: 15 }} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
+            <ListItem key={item.sfid} style={styles.listItem} onPress={() => this.props.navigation.push('CaseDetails', { item })}>
               <Left>
                 <View>
                   <Text>{index + 1}. {item.subject}</Text>
@@ -100,6 +101,28 @@ class AccountDetail extends React.Component {
               </Left>
               <Right>
                 <Text>{item.priority}</Text>
+              </Right>
+            </ListItem>
+          )}
+        />
+      );
+    }
+
+    if (accordionContent.title === 'Opportunities') {
+      return (
+        <FlatList
+          data={accordionContent.content}
+          keyExtractor={(item) => item.sfid}
+          renderItem={({ item, index }) => (
+            <ListItem key={item.sfid} style={styles.listItem} onPress={() => this.props.navigation.push('OpportunityDetails', { item })}>
+              <Left>
+                <View>
+                  <Text>{index + 1}. {item.name}</Text>
+                  <Text style={{ marginTop: 5 }}>{item.stagename}</Text>
+                </View>
+              </Left>
+              <Right>
+                <Text>{item.probability}%</Text>
               </Right>
             </ListItem>
           )}

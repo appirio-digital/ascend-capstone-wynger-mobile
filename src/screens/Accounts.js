@@ -20,8 +20,7 @@ import Colors from '../constants/Colors';
 import AccountList from '../components/AccountList'
 import UserHeader from '../components/UserHeader'
 
-import { fetchAccountsScreen } from '../store/actions/accounts';
-
+import { fetchAccountsScreen, setFiltering, filterRecords } from '../store/actions/accounts';
 
 const styles = StyleSheet.create({
   content: {
@@ -46,7 +45,8 @@ const styles = StyleSheet.create({
 class Accounts extends React.Component {
 
   state = {
-    selectedAccount: null
+    selectedAccount: null,
+    searchText: '',
   }
 
   componentDidMount() {
@@ -69,6 +69,18 @@ class Accounts extends React.Component {
     ));
   }
 
+  onSearchChange = (searchText) => {
+    if (searchText === '') {
+      this.props.dispatch(setFiltering(false));
+      this.setState({ searchText });
+      return;
+    }
+
+    this.setState({ searchText });
+    this.props.dispatch(setFiltering(true));
+    this.props.dispatch(filterRecords(searchText));
+  }
+
   render() {
     return (
       <Container>
@@ -78,6 +90,8 @@ class Accounts extends React.Component {
             <Input 
               style={styles.searchInput}
               placeholder='Search Accounts Here...'
+              // value={this.state.searchText}
+              // onChangeText={this.onSearchChange}
             />
           </View>
           <Picker
@@ -107,7 +121,7 @@ class Accounts extends React.Component {
           </Picker>
           <AccountList 
             fetchingAccounts={this.props.fetchingScreen}
-            accounts={this.props.records} 
+            accounts={this.props.records}
             navigateToDetailsPage={this.navigateToDetailsPage} 
           />
         </Content>
@@ -122,6 +136,8 @@ const mapStateToProps = (state) => ({
   label: state.accounts.label,
   fetchingScreen: state.accounts.fetchingScreen,
   fetchScreenError: state.accounts.fetchScreenError,
+  filtering: state.accounts.filtering,
+  filteredRecords: state.accounts.filteredRecords,
   fetchingDetails: state.accounts.fetchingDetails,
   fetchingDetailsError: state.accounts.fetchingDetailsError,
   accountId: state.accounts.accountId,

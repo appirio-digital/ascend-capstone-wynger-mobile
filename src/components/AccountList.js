@@ -12,10 +12,11 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   itemIndustry: {
     fontSize: 16,
+    marginTop: 5
   }
 });
 
@@ -27,7 +28,7 @@ function AccountList(props) {
       <Left>
         <View>
           <Text style={styles.itemName}>{`${index + 1}.  ${item.name || ''}`}</Text>
-          <Text style={styles.itemIndustry}>{item.industries__c || ''}</Text>
+          {item.industries__c !== null ? <Text style={styles.itemIndustry}>{item.industries__c }</Text> : null}
         </View>
       </Left>
       <Right>
@@ -38,7 +39,9 @@ function AccountList(props) {
     </ListItem>
   );
 
-  if (props.fetchingAccounts) return <Text>Loading Accounts...</Text>;
+  if (props.fetchingAccounts) {
+    return <Text style={{ paddingLeft: 15, fontSize: 20, fontWeight: 'bold' }}>Loading Accounts...</Text>;
+  }
 
   return (
     <FlatList 

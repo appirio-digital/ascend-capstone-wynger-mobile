@@ -96,7 +96,7 @@ class Products extends React.Component {
             style={styles.picker}
             textStyle={{ fontWeight: 'bold' }}
             itemTextStyle={{ fontWeight: 'bold' }}
-            placeholder='Select A List View'
+            placeholder='Select A Listview'
             selectedValue={this.state.selectedProduct}
             onValueChange={this.onSelectedProductValueChange}
             renderHeader={(backAction) => (

@@ -22,34 +22,36 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class ProductList extends React.Component {
-  keyExtractor = (item) => item.sfid;
+function ProductList(props) {
+  const keyExtractor = (item) => item.sfid;
 
-  renderProduct = ({ item, index }) => (
+  const renderProduct = ({ item, index }) => (
     <ListItem style={styles.item}>
       <Left>
         <View>
           <Text style={styles.itemName}>{`${index + 1}.  ${item.name}`}</Text>
-          <Text style={styles.itemIndustry}>{item.industry__c}</Text>
+          {item.industry__c !== null ? <Text style={styles.itemIndustry}>{item.industry__c}</Text> : null}
         </View>
       </Left>
       <Right>
-        <Button transparent onPress={() => this.props.navigateToDetailsPage('ProductDetails', item)}>
+        <Button transparent onPress={() => props.navigateToDetailsPage('ProductDetails', item)}>
           <Icon type='Ionicons' name='ios-arrow-forward' style={styles.icon} />
         </Button>
       </Right>
     </ListItem>
   );
 
-  render() {
-    if (this.props.fetchingScreen) return <Text>Loading Products...</Text>;
-
-    return (
-      <FlatList 
-        data={this.props.products}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderProduct}
-      />
-    );
+  if (props.fetchingScreen) {
+    return <Text style={{ paddingLeft: 15, fontSize: 20, fontWeight: 'bold' }}>Loading Products...</Text>;
   }
+
+  return (
+    <FlatList 
+      data={props.products}
+      keyExtractor={keyExtractor}
+      renderItem={renderProduct}
+    />
+  );
 }
+
+export default ProductList;

@@ -139,6 +139,7 @@ export default class CaseDetail extends React.Component {
         <Content style={styles.content}>
           {/* ----- Case Information Section ------ */}
           <View style={{ marginTop: 20, width: '100%', padding: 10 }}>
+            <RecordField label='Contact Email' value={item.contactemail || ''} />
             <RecordField label='Case Subject' value={item.subject || ''} />
             <RecordField label='Case Priority' value={item.priority || ''} />
             <RecordField label='Case Number' value={item.casenumber || ''} />

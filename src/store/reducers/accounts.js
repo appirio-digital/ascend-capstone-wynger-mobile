@@ -10,6 +10,8 @@ let initialState = {
   label: '',
   fetchingScreen: false,
   fetchScreenError: '',
+  filtering: false,
+  filteredRecords: [],
 
   // account details screen state
   fetchingDetails: false,
@@ -54,6 +56,12 @@ const accounts = (state = initialState, action) =>
         return;
       case ACCOUNTS.SET_CURRENT_ACCOUNT:
         draft.accountId = action.payload;
+        return;
+      case ACCOUNTS.SET_FILTERING:
+        draft.filtering = action.payload;
+        return;
+      case ACCOUNTS.SET_FILTERED_RECORDS:
+        draft.filteredRecords = action.payload;
         return;
     }  
   });

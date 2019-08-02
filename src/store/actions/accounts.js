@@ -46,3 +46,20 @@ const fetchAccountDetailsFailure = (error) => ({
   type: ACCOUNTS.FETCH_ACCOUNT_DETAILS_FAILURE,
   payload: error
 });
+
+export const setFiltering = (value) => ({
+  type: ACCOUNTS.SET_FILTERING,
+  payload: value
+});
+
+export const filterRecords = (searchText) => (dispatch, getState) => {
+  let state = getState();
+  let records = state.accounts.records;
+  let filteredRecords = records.filter(rec => rec.name.includes(searchText));
+  dispatch(setFilteredRecords(filteredRecords));
+}
+
+const setFilteredRecords = (filteredRecords) => ({
+  type: ACCOUNTS.SET_FILTERED_RECORDS,
+  payload: filterRecords
+});
